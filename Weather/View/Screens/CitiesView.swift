@@ -3,29 +3,39 @@
 import SwiftUI
 
 struct CitiesView: View {
+    @State var editing = true
+    @State var animate = false
+    
     var body: some View {
         ZStack {
             Color("background").edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack {
-                VStack (spacing: 25) {
+                VStack (spacing: 20) {
+                    Button (action: {
+                        editing.toggle()
+                    }) {
+                        Image(systemName: "pencil")
+                    }
+                    .padding(.vertical, 50)
+                    
                     HStack {
-                        CityView()
+                        CityView(temp: 22, city: "Austin", country: "usa", image: "sunny", rain: 27, wind: 4.4, showButtons: $editing)
                         Spacer()
-                        CityView()
+                        CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
                     }
                     HStack {
-                        CityView()
+                        CityView(temp: 22, city: "Austin", country: "usa", image: "cloudySun", rain: 27, wind: 4.4, showButtons: $editing)
                         Spacer()
-                        CityView()
+                        CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
                     }
                     HStack {
-                        CityView()
+                        CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
                         Spacer()
-                        CityView()
+                        CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
                     }
                     Spacer()
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 25)
                 .frame(height: (UIScreen.main.bounds.height - (UIScreen.main.bounds.height * 0.12)))
                 Spacer()
             }
