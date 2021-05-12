@@ -10,10 +10,10 @@ struct SettingsView: View {
                 VStack {
                     Text("Settings")
                 }
-                .frame(height: (UIScreen.main.bounds.height - (UIScreen.main.bounds.height * 0.12)))
+                .frame(height: miscData.viewHeight)
                 Spacer()
             }
-        }.foregroundColor(.white)
+        }
     }
 }
 

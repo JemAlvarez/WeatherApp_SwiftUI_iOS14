@@ -10,10 +10,10 @@ struct HomeView: View {
                 VStack {
                     Text("Home")
                 }
-                .frame(height: (UIScreen.main.bounds.height - (UIScreen.main.bounds.height * 0.12)))
+                .frame(height: miscData.viewHeight)
                 Spacer()
             }
-        }.foregroundColor(.white)
+        }
     }
 }
 

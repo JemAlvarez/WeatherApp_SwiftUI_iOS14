@@ -22,19 +22,11 @@ struct MainView: View {
                     Image(systemName: "gearshape")
                 }
         }
+        .foregroundColor(.white)
     }
 }
 
-extension UITabBarController {
-    override open func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let standardAppearance = UITabBarAppearance()
-        
-        standardAppearance.configureWithTransparentBackground()
 
-        tabBar.standardAppearance = standardAppearance
-    }
-}
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {

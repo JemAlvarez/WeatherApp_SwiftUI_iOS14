@@ -13,6 +13,8 @@ struct CityView: View {
     
     @State private var animate = false
     
+    private let widgetWidth = UIScreen.main.bounds.width / 2.4
+    
     var body: some View {
         ZStack (alignment: .top) {
             // BOX
@@ -66,7 +68,7 @@ struct CityView: View {
                 .padding(.bottom, 20)
                 .padding(.horizontal, 20)
             }
-            .frame(width: UIScreen.main.bounds.width / 2.4, height: UIScreen.main.bounds.width / 2.4)
+            .frame(width: widgetWidth, height: widgetWidth)
             .background(Color("backgroundLight"))
             .cornerRadius(15)
             .foregroundColor(.white)
@@ -82,6 +84,9 @@ struct CityView: View {
                 }
                 .rotationEffect(animate ? Angle(degrees: 20) : .zero)
                 .offset(y: animate ? 1 : 0)
+                .onTapGesture {
+                    // set city button
+                }
                 
                 ZStack {
                     Color.white.frame(width: 15, height: 15)
@@ -90,13 +95,16 @@ struct CityView: View {
                 }
                 .rotationEffect(animate ? Angle(degrees: 20) : .zero)
                 .offset(y: animate ? 1 : 0)
+                .onTapGesture {
+                    // delete city button
+                }
             }
             .font(.title)
-            .frame(width: UIScreen.main.bounds.width / 2.4)
+            .frame(width: widgetWidth)
             .offset(x: 15,y: -15)
             .isHidden(showButtons)
             .onAppear {
-                withAnimation(Animation.easeInOut(duration: 0.2).repeatForever(autoreverses: true)) {
+                withAnimation(Animation.easeInOut(duration: 0.15).repeatForever(autoreverses: true)) {
                     animate.toggle()
                 }
             }

@@ -9,37 +9,29 @@ struct CitiesView: View {
     var body: some View {
         ZStack {
             Color("background").edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            VStack {
+            ScrollView {
                 VStack (spacing: 20) {
-                    Button (action: {
-                        editing.toggle()
-                    }) {
-                        Image(systemName: "pencil")
-                    }
-                    .padding(.vertical, 50)
+                    CitiesHeaderView(editing: $editing)
+                        .padding(.vertical)
                     
-                    HStack {
+                    HStack (spacing: 20) {
                         CityView(temp: 22, city: "Austin", country: "usa", image: "sunny", rain: 27, wind: 4.4, showButtons: $editing)
-                        Spacer()
                         CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
                     }
-                    HStack {
+                    HStack (spacing: 20) {
                         CityView(temp: 22, city: "Austin", country: "usa", image: "cloudySun", rain: 27, wind: 4.4, showButtons: $editing)
-                        Spacer()
                         CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
                     }
-                    HStack {
+                    HStack (spacing: 20) {
                         CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
-                        Spacer()
                         CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
                     }
                     Spacer()
                 }
-                .padding(.horizontal, 25)
-                .frame(height: (UIScreen.main.bounds.height - (UIScreen.main.bounds.height * 0.12)))
+                .padding(.horizontal)
                 Spacer()
             }
-        }.foregroundColor(.white)
+        }
     }
 }
 
