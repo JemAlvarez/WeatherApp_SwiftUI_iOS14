@@ -26,7 +26,6 @@ struct CitiesView: View {
                         CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
                         CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
                     }
-                    Spacer()
                 }
                 .padding(.horizontal)
                 Spacer()

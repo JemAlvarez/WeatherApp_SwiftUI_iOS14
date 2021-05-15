@@ -56,15 +56,11 @@ struct CityView: View {
                 
                 // BOTTOM
                 HStack {
-                    Image(systemName: "drop")
-                        .foregroundColor(Color("lightBlue"))
-                    Text("\(rain)%")
+                    SmallDataView(image: "drop", data: Text("\(rain)%"), font: .caption2)
                     Spacer()
-                    Image(systemName: "wind")
-                        .foregroundColor(Color("lightBlue"))
-                    Text("\(wind, specifier: "%.1f") mph")
+                    SmallDataView(image: "wind", data: Text("\(wind, specifier: "%.1f") mph"), font: .caption2)
+                    
                 }
-                .font(.caption2)
                 .padding(.bottom, 20)
                 .padding(.horizontal, 20)
             }

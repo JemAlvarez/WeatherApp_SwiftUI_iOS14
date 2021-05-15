@@ -31,6 +31,7 @@ struct CitiesHeaderView: View {
                 Button(action: {
                     search = ""
                     hideKeyboard()
+                    searching = false
                 }) {
                     Image(systemName: "xmark.circle.fill")
                         .font(.title3)

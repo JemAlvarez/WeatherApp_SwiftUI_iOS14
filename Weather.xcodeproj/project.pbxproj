@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CA31B920264C737A00C09106 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA31B91F264C737A00C09106 /* Misc.swift */; };
 		CA31B927264C755F00C09106 /* CitiesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA31B926264C755F00C09106 /* CitiesHeaderView.swift */; };
+		CA6036FA264F3F850064C021 /* SmallDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6036F9264F3F850064C021 /* SmallDataView.swift */; };
 		CAEA57092642FE470060A51E /* WeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEA57082642FE470060A51E /* WeatherApp.swift */; };
 		CAEA570B2642FE470060A51E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEA570A2642FE470060A51E /* ContentView.swift */; };
 		CAEA570D2642FE490060A51E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAEA570C2642FE490060A51E /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		CA31B91F264C737A00C09106 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		CA31B926264C755F00C09106 /* CitiesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesHeaderView.swift; sourceTree = "<group>"; };
+		CA6036F9264F3F850064C021 /* SmallDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallDataView.swift; sourceTree = "<group>"; };
 		CAEA57052642FE470060A51E /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAEA57082642FE470060A51E /* WeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApp.swift; sourceTree = "<group>"; };
 		CAEA570A2642FE470060A51E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			children = (
 				CAEA572D264313F60060A51E /* CityView.swift */,
 				CA31B926264C755F00C09106 /* CitiesHeaderView.swift */,
+				CA6036F9264F3F850064C021 /* SmallDataView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				CA31B927264C755F00C09106 /* CitiesHeaderView.swift in Sources */,
 				CAEA5725264302150060A51E /* MapView.swift in Sources */,
 				CAEA571E2643012F0060A51E /* MainView.swift in Sources */,
+				CA6036FA264F3F850064C021 /* SmallDataView.swift in Sources */,
 				CAEA572E264313F60060A51E /* CityView.swift in Sources */,
 				CAEA57092642FE470060A51E /* WeatherApp.swift in Sources */,
 				CAEA5728264302230060A51E /* CitiesView.swift in Sources */,
