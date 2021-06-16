@@ -11,9 +11,9 @@ struct CityView: View {
     @State public var wind: Double
     @Binding public var showButtons: Bool
     
+    @EnvironmentObject var tabSelection: TabSelection
     @State private var animate = false
-    
-    private let widgetWidth = UIScreen.main.bounds.width / 2.4
+    @State private var widgetWidth: CGFloat = 0
     
     var body: some View {
         ZStack (alignment: .top) {
@@ -106,19 +106,16 @@ struct CityView: View {
             }
             
         }
-    }
-}
-
-extension View {
-    @ViewBuilder func isHidden(_ hidden: Bool, remove: Bool = false) -> some View {
-            if hidden {
-                if !remove {
-                    self.hidden()
+        .onChange(of: tabSelection.tab) {newValue in
+            if newValue == "cities" {
+                withAnimation {
+                    widgetWidth = UIScreen.main.bounds.width / 2.4
                 }
             } else {
-                self
+                widgetWidth = (UIScreen.main.bounds.width / 2.4) / 1.2
             }
         }
+    }
 }
 
 struct CityView_Previews: PreviewProvider {

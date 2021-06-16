@@ -3,22 +3,29 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject var tabSelection: TabSelection
+    @State var imageZoom: CGFloat = 1
+    @State var headerOffset: CGFloat = -100
+    
     var body: some View {
         ZStack {
             LinearGradient(gradient: Gradient(colors: [Color("background").opacity(0.94), Color("background"), Color("background").opacity(0.94)]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack {
                 VStack {
-                    HStack {
-                        Image(systemName: "target")
-                        Text("Your Location Now")
+                    VStack {
+                        HStack {
+                            Image(systemName: "target")
+                            Text("Your Location Now")
+                        }
+                        .font(.subheadline)
+                        .opacity(0.4)
+                        .padding(.bottom, 5)
+                        .padding(.top, 30)
+                        
+                        Text("San Fransisco, California, USA")
+                            .font(.title2)
                     }
-                    .font(.subheadline)
-                    .opacity(0.4)
-                    .padding(.bottom, 5)
-                    .padding(.top, 30)
-                    
-                    Text("San Fransisco, California, USA")
-                        .font(.title2)
+                    .offset(y: headerOffset)
                     
                     ZStack {
                         Color("backgroundLight")
@@ -30,6 +37,7 @@ struct SettingsView: View {
                             .frame(width: UIScreen.main.bounds.width / 1.8)
                     }
                     .frame(width: UIScreen.main.bounds.width / 1.6, height: UIScreen.main.bounds.width / 1.6)
+                    .scaleEffect(imageZoom)
                     
                     Text("Moonlight")
                         .padding(.horizontal, 15)
@@ -164,6 +172,17 @@ struct SettingsView: View {
                 }
                 .frame(height: miscData.viewHeight)
                 Spacer()
+            }
+        }
+        .onChange(of: tabSelection.tab) {newValue in
+            if newValue == "settings" {
+                withAnimation {
+                    imageZoom = 1
+                    headerOffset = 0
+                }
+            } else {
+                headerOffset = -100
+                imageZoom = 0.8
             }
         }
     }
