@@ -4,16 +4,11 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        ZStack {
+        CustomScreenView(customScreen: {
+            Text("HOME")
+        }, background: {
             Color("background").edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            VStack {
-                VStack {
-                    Text("Home")
-                }
-                .frame(height: miscData.viewHeight)
-                Spacer()
-            }
-        }
+        })
     }
 }
 

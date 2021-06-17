@@ -10,30 +10,34 @@ struct CitiesView: View {
     @EnvironmentObject var tabSelection: TabSelection
     
     var body: some View {
-        ZStack {
-            Color("background").edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            ScrollView {
-                VStack (spacing: 20) {
-                    CitiesHeaderView(editing: $editing)
-                        .padding(.vertical)
-                        .offset(y: headerOffset)
-                    
-                    HStack (spacing: 20) {
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "sunny", rain: 27, wind: 4.4, showButtons: $editing)
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
+        NavigationView {
+            ZStack {
+                Color("background").edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                ScrollView {
+                    VStack (spacing: 20) {
+                        CitiesHeaderView(editing: $editing)
+                            .padding(.vertical)
+                            .offset(y: headerOffset)
+                        
+                        HStack (spacing: 20) {
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "sunny", rain: 27, wind: 4.4, showButtons: $editing)
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
+                        }
+                        HStack (spacing: 20) {
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "cloudySun", rain: 27, wind: 4.4, showButtons: $editing)
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
+                        }
+                        HStack (spacing: 20) {
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
+                        }
                     }
-                    HStack (spacing: 20) {
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "cloudySun", rain: 27, wind: 4.4, showButtons: $editing)
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
-                    }
-                    HStack (spacing: 20) {
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
-                    }
+                    .padding(.horizontal)
+                    Spacer()
                 }
-                .padding(.horizontal)
-                Spacer()
             }
+            .navigationTitle("Cities")
+            .navigationBarHidden(true)
         }
         .onChange(of: tabSelection.tab) { newValue in
             if newValue == "cities" {

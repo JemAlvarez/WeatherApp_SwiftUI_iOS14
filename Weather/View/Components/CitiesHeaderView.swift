@@ -8,55 +8,60 @@ struct CitiesHeaderView: View {
     @State var search = ""
     @State var searchFieldWidth: CGFloat = .infinity
     @State var searching = false
+    @State var showingSearchList = false
     
     var body: some View {
-        HStack {
-            Button(action: {
-                if searching {
-                    hideKeyboard()
+        ZStack {
+            NavigationLink(destination: SearchListView(searchTerm: search), isActive: $showingSearchList) {EmptyView()}
+            HStack {
+                Button(action: {
+                    withAnimation {
+                        searching = true
+                    }
+                }) {
+                    Image(systemName: "magnifyingglass")
                 }
                 
-                withAnimation {
-                    searching.toggle()
+                HStack {
+                    TextField("Search", text: $search, onCommit:  {
+                        if !search.isEmpty {
+                            showingSearchList = true
+                        }
+                        search = ""
+                    })
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        search = ""
+                        hideKeyboard()
+                        
+                        withAnimation {
+                            searching.toggle()
+                        }
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title3)
+                            .foregroundColor(.accentColor)
+                    }
+                    .offset(x: searching ? 0 : 500)
                 }
-            }) {
-                Image(systemName: "magnifyingglass")
-            }
-            
-            HStack {
-                TextField("Search", text: $search)
+                 .frame(maxWidth: searching ? .infinity : 0)
+                
+                Text("Saved Cities")
+                    .frame(maxWidth: searching ? 0 : .infinity, maxHeight: 20, alignment: .leading)
                 
                 Spacer()
                 
-                Button(action: {
-                    search = ""
-                    hideKeyboard()
-                    
-                    withAnimation {
-                        searching.toggle()
-                    }
+                Button (action: {
+                    editing.toggle()
                 }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title3)
-                        .foregroundColor(.accentColor)
+                    Image(systemName: "pencil")
                 }
-                .offset(x: searching ? 0 : 500)
             }
-             .frame(maxWidth: searching ? .infinity : 0)
-            
-            Text("Saved Cities")
-                .frame(maxWidth: searching ? 0 : .infinity, maxHeight: 20, alignment: .leading)
-            
-            Spacer()
-            
-            Button (action: {
-                editing.toggle()
-            }) {
-                Image(systemName: "pencil")
-            }
+            .padding(.horizontal)
+            .font(.title2)
         }
-        .padding(.horizontal)
-        .font(.title2)
     }
 }
 
