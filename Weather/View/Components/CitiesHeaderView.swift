@@ -12,7 +12,7 @@ struct CitiesHeaderView: View {
     
     var body: some View {
         ZStack {
-            NavigationLink(destination: SearchListView(searchTerm: search), isActive: $showingSearchList) {EmptyView()}
+            NavigationLink(destination: SearchListView(searchTerm: $search), isActive: $showingSearchList) {EmptyView()}
             HStack {
                 Button(action: {
                     withAnimation {
@@ -27,7 +27,6 @@ struct CitiesHeaderView: View {
                         if !search.isEmpty {
                             showingSearchList = true
                         }
-                        search = ""
                     })
                     
                     Spacer()
