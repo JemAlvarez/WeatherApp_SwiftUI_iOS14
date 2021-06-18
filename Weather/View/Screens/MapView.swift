@@ -81,9 +81,23 @@ struct MapView: View {
                                     .frame(height: 20)
                             }
                             .onTapGesture {
-                                withAnimation {
-                                    region.span.latitudeDelta -= 0.2
-                                    region.span.longitudeDelta -= 0.2
+                                let zoomIncrement = calculateZoom("plus")
+                                let lat = region.span.latitudeDelta
+                                let lon = region.span.longitudeDelta
+                                
+                                print("latitude", lat)
+                                print("new latitude", lat - zoomIncrement)
+                                
+                                if (lat - zoomIncrement) > 0 && (lon - zoomIncrement) > 0 {
+                                    withAnimation {
+                                        region.span.latitudeDelta -= zoomIncrement
+                                        region.span.longitudeDelta -= zoomIncrement
+                                    }
+                                } else {
+                                    withAnimation {
+                                        region.span.latitudeDelta = 0
+                                        region.span.longitudeDelta = 0
+                                    }
                                 }
                             }
                             CustomMapUI {
@@ -91,9 +105,20 @@ struct MapView: View {
                                     .frame(height: 20)
                             }
                             .onTapGesture {
-                                withAnimation {
-                                    region.span.latitudeDelta += 0.2
-                                    region.span.longitudeDelta += 0.2
+                                let zoomIncrement = calculateZoom("minus")
+                                let lat = region.span.latitudeDelta
+                                let lon = region.span.longitudeDelta
+                                
+                                if (lat + zoomIncrement) < 100 && (lon + zoomIncrement) < 100 {
+                                    withAnimation {
+                                        region.span.latitudeDelta += zoomIncrement
+                                        region.span.longitudeDelta += zoomIncrement
+                                    }
+                                } else {
+                                    withAnimation {
+                                        region.span.latitudeDelta = 100
+                                        region.span.longitudeDelta = 100
+                                    }
                                 }
                             }
                         }
@@ -116,6 +141,21 @@ struct MapView: View {
         }) {
             Color("background").edgesIgnoringSafeArea(.all)
         }
+    }
+    
+    func calculateZoom(_ zoomType: String) -> CLLocationDegrees {
+        let lat = region.span.latitudeDelta
+        var zoomIncrement: CLLocationDegrees = 0
+        
+        if lat == 0 {
+            zoomIncrement = 0.05
+        } else if zoomType == "plus" {
+            zoomIncrement = lat / 2
+        } else if zoomType == "minus" {
+            zoomIncrement = lat * 2
+        }
+        
+        return zoomIncrement
     }
 }
 

@@ -34,7 +34,7 @@ struct CityView: View {
                             .padding(.top, 7)
                             .font(.headline)
                             .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                        Text(country)
+                        Text(country.capitalized)
                             .padding(.top, 4)
                             .font(.footnote)
                             .opacity(0.5)
