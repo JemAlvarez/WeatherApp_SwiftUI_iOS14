@@ -3,6 +3,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var tabSelection: TabSelection
     var body: some View {
         // view
         CustomScreenView(customScreen: {

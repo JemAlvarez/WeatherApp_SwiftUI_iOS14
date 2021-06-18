@@ -12,14 +12,11 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         locationStatus = manager.authorizationStatus
+        
         if manager.authorizationStatus == .authorizedWhenInUse {
             manager.startUpdatingLocation()
         } else {
             manager.requestWhenInUseAuthorization()
         }
-    }
-    
-    func request() {
-        manager.requestWhenInUseAuthorization()
     }
 }

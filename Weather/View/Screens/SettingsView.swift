@@ -209,6 +209,13 @@ struct SettingsView: View {
         }
         .onAppear {
             locationStatus = locationManager.manager.authorizationStatus == .authorizedWhenInUse ? "Allowed" : "Not Allowed"
+            
+            if tabSelection.tab == "settings" {
+                withAnimation {
+                    headerOffset = 0
+                    imageZoom = 1
+                }
+            }
         }
     }
 }

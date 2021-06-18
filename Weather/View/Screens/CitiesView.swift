@@ -5,14 +5,12 @@ import SwiftUI
 struct CitiesView: View {
     // states
     @State var editing = true
-    @State var animate = false
     @State var headerOffset: CGFloat = -100
     @EnvironmentObject var tabSelection: TabSelection
     
     var body: some View {
         // nav
         NavigationView {
-            // z
             ZStack {
                 // background
                 Color("background").edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
@@ -42,8 +40,7 @@ struct CitiesView: View {
                     .padding(.horizontal)
                     Spacer()
                 }
-            }
-            // hide nav title
+            }            // hide nav title
             .navigationTitle("Cities")
             .navigationBarHidden(true)
         }
@@ -55,6 +52,13 @@ struct CitiesView: View {
                 }
             } else {
                 headerOffset = -100
+            }
+        }
+        .onAppear {
+            if tabSelection.tab == "cities" {
+                withAnimation {
+                    headerOffset = 0
+                }
             }
         }
     }

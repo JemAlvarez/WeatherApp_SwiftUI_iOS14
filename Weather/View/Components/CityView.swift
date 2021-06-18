@@ -115,6 +115,13 @@ struct CityView: View {
                 widgetWidth = (UIScreen.main.bounds.width / 2.4) / 1.2
             }
         }
+        .onAppear {
+            if tabSelection.tab == "cities" {
+                withAnimation {
+                    widgetWidth = UIScreen.main.bounds.width / 2.4
+                }
+            }
+        }
     }
 }
 

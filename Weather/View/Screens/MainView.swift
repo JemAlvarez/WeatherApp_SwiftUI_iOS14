@@ -20,6 +20,7 @@ struct MainView: View {
                     Image(systemName: "mappin")
                 }
                 .tag("map")
+//            CitiesView()
             CitiesView()
                 .tabItem {
                     Image(systemName: "heart")
