@@ -2,29 +2,39 @@
 
 import SwiftUI
 import MapKit
-import CoreLocation
 
 struct MapView: View {
+    // map and location
     @State var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    @EnvironmentObject var locationManager: LocationManager
     
+    // states
     @State var citySet = false
     @State var cityFav = false
-    @State var userLocation = false
+    @State var tracking: MapUserTrackingMode = .follow
     @State var location = "London"
+    @EnvironmentObject var tabSelection: TabSelection
     
+    // body
     var body: some View {
+        // view
         CustomScreenView (customScreen: {
             ZStack {
+                // map
                 Map(
                     coordinateRegion: $region,
-                    interactionModes: MapInteractionModes.all
-//                    showsUserLocation: true
+                    interactionModes: MapInteractionModes.all,
+                    showsUserLocation: true,
+                    userTrackingMode: $tracking
                 )
                     .cornerRadius(20)
                     .edgesIgnoringSafeArea(.top)
                 
+                // buttons
                 VStack {
+                    // top buttons
                     HStack (alignment: .top) {
+                        // left title
                         CustomMapUI {
                             Text(location)
                                 .font(.title)
@@ -34,11 +44,13 @@ struct MapView: View {
                         
                         Spacer()
                         
+                        // right stack
                         VStack (spacing: 5) {
+                            // set current location
                             CustomMapUI {
                                 Image(systemName: citySet ? "mappin.circle.fill" : "mappin.circle")
                                     .frame(width: 20)
-                                    .foregroundColor(citySet ? .green : .primary)
+                                    .foregroundColor(citySet ? .green : .white)
                             }
                             .padding(.top, 30)
                             .onTapGesture {
@@ -47,10 +59,11 @@ struct MapView: View {
                                 }
                             }
                             
+                            // set favorite
                             CustomMapUI {
                                 Image(systemName: cityFav ? "star.fill" : "star")
                                     .frame(width: 20)
-                                    .foregroundColor(cityFav ? .yellow : .primary)
+                                    .foregroundColor(cityFav ? .yellow : .white)
                             }
                             .onTapGesture {
                                 withAnimation {
@@ -58,14 +71,21 @@ struct MapView: View {
                                 }
                             }
                             
+                            // set tracking
                             CustomMapUI {
-                                Image(systemName: userLocation ? "location.fill" : "location")
+                                Image(systemName: tracking == .follow ? "location.fill" : "location")
                                     .frame(width: 20)
-                                    .foregroundColor(userLocation ? .blue : .primary)
+                                    .foregroundColor(tracking == .follow ? .blue : .white)
                             }
                             .onTapGesture {
                                 withAnimation {
-                                    userLocation.toggle()
+                                    if locationManager.locationStatus == .authorizedWhenInUse {
+                                        if tracking == .follow {
+                                            tracking = .none
+                                        } else {
+                                            tracking = .follow
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -74,19 +94,20 @@ struct MapView: View {
                     
                     Spacer()
                     
+                    // bottom buttons
                     HStack {
+                        // left zoom buttons
                         VStack (spacing: 0) {
+                            // zoom in
                             CustomMapUI {
                                 Image(systemName: "plus")
                                     .frame(height: 20)
                             }
                             .onTapGesture {
+                                tracking = .none
                                 let zoomIncrement = calculateZoom("plus")
                                 let lat = region.span.latitudeDelta
                                 let lon = region.span.longitudeDelta
-                                
-                                print("latitude", lat)
-                                print("new latitude", lat - zoomIncrement)
                                 
                                 if (lat - zoomIncrement) > 0 && (lon - zoomIncrement) > 0 {
                                     withAnimation {
@@ -100,11 +121,13 @@ struct MapView: View {
                                     }
                                 }
                             }
+                            // zoom out
                             CustomMapUI {
                                 Image(systemName: "minus")
                                     .frame(height: 20)
                             }
                             .onTapGesture {
+                                tracking = .none
                                 let zoomIncrement = calculateZoom("minus")
                                 let lat = region.span.latitudeDelta
                                 let lon = region.span.longitudeDelta
@@ -126,6 +149,7 @@ struct MapView: View {
                         
                         Spacer()
                         
+                        // right forecast
                         CustomMapUI {
                             HStack {
                                 Image(systemName: "cloud.rain.fill")
@@ -139,10 +163,22 @@ struct MapView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }) {
+            // view background
             Color("background").edgesIgnoringSafeArea(.all)
+        }
+        // appear
+        .onAppear {
+            region.center = locationManager.manager.location?.coordinate ?? CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)
+        }
+        // tab change
+        .onChange(of: tabSelection.tab) { newValue in
+            if newValue != "map" {
+                tracking = .follow
+            }
         }
     }
     
+    // get zoom increment
     func calculateZoom(_ zoomType: String) -> CLLocationDegrees {
         let lat = region.span.latitudeDelta
         var zoomIncrement: CLLocationDegrees = 0

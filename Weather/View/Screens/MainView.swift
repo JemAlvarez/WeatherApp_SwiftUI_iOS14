@@ -3,9 +3,12 @@
 import SwiftUI
 
 struct MainView: View {
+    // environment
     @StateObject var tabSelection = TabSelection()
+    @StateObject var locationManager = LocationManager()
     
     var body: some View {
+        // tab view
         TabView (selection: $tabSelection.tab) {
             HomeView()
                 .tabItem {
@@ -30,6 +33,7 @@ struct MainView: View {
         }
         .foregroundColor(.white)
         .environmentObject(tabSelection)
+        .environmentObject(locationManager)
     }
 }
 
