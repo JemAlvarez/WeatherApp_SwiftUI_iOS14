@@ -9,13 +9,15 @@ struct SettingsView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var tabSelection: TabSelection
     @State var imageZoom: CGFloat = 1
-    @State var headerOffset: CGFloat = -100
+    @State var headerOffset: CGFloat = 0
     @State var locationStatus = "Allowed"
+    @State var tempDegree = "F"
+    @State var windSpeedUnit = "mph"
     
     var body: some View {
         // view
         CustomScreenView(customScreen: {
-            VStack {
+            VStack (spacing: 0) {
                 if locationStatus == "Allowed" {
                     // top info
                     VStack {
@@ -25,8 +27,8 @@ struct SettingsView: View {
                         }
                         .font(.subheadline)
                         .opacity(0.4)
-                        .padding(.bottom, 5)
-                        .padding(.top, 30)
+                        .padding(.bottom, 2)
+                        .padding(.top, 10)
                         
                         Text("San Fransisco, California, USA")
                             .font(.title2)
@@ -41,9 +43,9 @@ struct SettingsView: View {
                         Image("moonSun")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: UIScreen.main.bounds.width / 1.8)
+                            .frame(width: UIScreen.main.bounds.width / 2)
                     }
-                    .frame(width: UIScreen.main.bounds.width / 1.6, height: UIScreen.main.bounds.width / 1.6)
+                    .frame(width: UIScreen.main.bounds.width / 1.8, height: UIScreen.main.bounds.width / 1.8)
                     .scaleEffect(imageZoom)
                     
                     // caption
@@ -61,7 +63,7 @@ struct SettingsView: View {
                             .offset(y: -15)
                         Text("C")
                     }
-                    .font(.system(size: 55).bold())
+                    .font(.system(size: 40).bold())
                     .padding(.vertical)
                     
                     // data info
@@ -92,84 +94,72 @@ struct SettingsView: View {
                         .opacity(0.4)
                 }
                 
+                Spacer()
+                
                 // settings
-                VStack (spacing: 20) {
+                HStack {
                     // temp f/c
-                    HStack {
-                        Text("Temperature")
-                        
-                        Spacer()
-                        
-                        Menu {
-                            Button(action: {
-                                
-                            }) {
-                                Text("Farenheit")
-                            }
-                            
-                            Button(action: {
-                                
-                            }) {
-                                Text("Celcius")
-                            }
+                    Menu {
+                        Button(action: {
+                            tempDegree = "F"
+                        }) {
+                            Text("Farenheit")
                         }
-                        label: {
-                            HStack {
-                                Text("Celcius")
-                                    .opacity(0.4)
-                                Image(systemName: "chevron.right")
-                            }
-                        }
-                    }
-                    // wind
-                    HStack {
-                        Text("Wind Speed")
-                        
-                        Spacer()
-                        
-                        Menu {
-                            Button(action: {
-                                
-                            }) {
-                                Text("m/s")
-                            }
-                            
-                            Button(action: {
-                                
-                            }) {
-                                Text("mph")
-                            }
-                        }
-                        label: {
-                            HStack {
-                                Text("mph")
-                                    .opacity(0.4)
-                                Image(systemName: "chevron.right")
-                            }
-                        }
-                    }
-                    // location
-                    HStack {
-                        Text("Location Privacy")
-                        
-                        Spacer()
                         
                         Button(action: {
-                            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+                            tempDegree = "C"
                         }) {
-                            HStack {
-                                Text(locationStatus)
-                                    .opacity(0.4)
-                                Image(systemName: "chevron.right")
-                            }
+                            Text("Celcius")
+                        }
+                    }
+                    label: {
+                        VStack (spacing: 5) {
+                            Image(systemName: "thermometer")
+                            Text(tempDegree)
+                                .opacity(0.4)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    // wind
+                    Menu {
+                        Button(action: {
+                            windSpeedUnit = "m/s"
+                        }) {
+                            Text("m/s")
+                        }
+                        
+                        Button(action: {
+                            windSpeedUnit = "mph"
+                        }) {
+                            Text("mph")
+                        }
+                    }
+                    label: {
+                        VStack (spacing: 5) {
+                            Image(systemName: "wind")
+                            Text(windSpeedUnit)
+                                .opacity(0.4)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    // location
+                    Button(action: {
+                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+                    }) {
+                        VStack (spacing: 5) {
+                            Image(systemName: locationStatus == "Allowed" ? "location.fill" : "location.slash.fill")
+                            Text(locationStatus)
+                                .opacity(0.4)
                         }
                     }
                 }
                 .foregroundColor(.white)
-                .padding(.horizontal, 35)
-                .padding(.top, 30)
-                
-                Spacer()
+                .padding(.horizontal, 70)
+                .padding(.top, 20)
                 
                 // weather info source
                 HStack (spacing: 30) {
@@ -181,7 +171,7 @@ struct SettingsView: View {
                     }
                 }
                 .opacity(0.4)
-                .padding(.bottom, 30)
+                .padding(.top, 20)
             }
         }, background: {
             // background gradient
@@ -222,6 +212,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        SettingsView().environmentObject(LocationManager()).environmentObject(TabSelection())
     }
 }

@@ -52,6 +52,7 @@ struct CitiesView: View {
                 }
             } else {
                 headerOffset = -100
+                editing = true
             }
         }
         .onAppear {

@@ -169,11 +169,16 @@ struct MapView: View {
         // appear
         .onAppear {
             region.center = locationManager.manager.location?.coordinate ?? CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)
+            
+            if tabSelection.tab == "map" {
+                region.span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+            }
         }
         // tab change
         .onChange(of: tabSelection.tab) { newValue in
             if newValue != "map" {
                 tracking = .follow
+                region.span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
             }
         }
     }
