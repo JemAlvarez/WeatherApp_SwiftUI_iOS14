@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-struct CustomMapUI <Content : View> : View {
+struct CustomMapUIView <Content : View> : View {
     var content: Content
     
     init(@ViewBuilder content: () -> Content) {
@@ -21,7 +21,7 @@ struct CustomMapUI <Content : View> : View {
 
 struct CustomMapUI_Previews: PreviewProvider {
     static var previews: some View {
-        CustomMapUI {
+        CustomMapUIView {
             Image(systemName: "cloud.rain.fill")
             Text("72º")
                 .opacity(0.5)

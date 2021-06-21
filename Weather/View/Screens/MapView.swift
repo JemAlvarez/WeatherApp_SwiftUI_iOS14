@@ -35,7 +35,7 @@ struct MapView: View {
                     // top buttons
                     HStack (alignment: .top) {
                         // left title
-                        CustomMapUI {
+                        CustomMapUIView {
                             Text(location)
                                 .font(.title)
                                 .padding(.horizontal)
@@ -47,7 +47,7 @@ struct MapView: View {
                         // right stack
                         VStack (spacing: 5) {
                             // set current location
-                            CustomMapUI {
+                            CustomMapUIView {
                                 Image(systemName: citySet ? "mappin.circle.fill" : "mappin.circle")
                                     .frame(width: 20)
                                     .foregroundColor(citySet ? .green : .white)
@@ -60,7 +60,7 @@ struct MapView: View {
                             }
                             
                             // set favorite
-                            CustomMapUI {
+                            CustomMapUIView {
                                 Image(systemName: cityFav ? "star.fill" : "star")
                                     .frame(width: 20)
                                     .foregroundColor(cityFav ? .yellow : .white)
@@ -72,7 +72,7 @@ struct MapView: View {
                             }
                             
                             // set tracking
-                            CustomMapUI {
+                            CustomMapUIView {
                                 Image(systemName: tracking == .follow ? "location.fill" : "location")
                                     .frame(width: 20)
                                     .foregroundColor(tracking == .follow ? .blue : .white)
@@ -99,7 +99,7 @@ struct MapView: View {
                         // left zoom buttons
                         VStack (spacing: 0) {
                             // zoom in
-                            CustomMapUI {
+                            CustomMapUIView {
                                 Image(systemName: "plus")
                                     .frame(height: 20)
                             }
@@ -122,7 +122,7 @@ struct MapView: View {
                                 }
                             }
                             // zoom out
-                            CustomMapUI {
+                            CustomMapUIView {
                                 Image(systemName: "minus")
                                     .frame(height: 20)
                             }
@@ -150,7 +150,7 @@ struct MapView: View {
                         Spacer()
                         
                         // right forecast
-                        CustomMapUI {
+                        CustomMapUIView {
                             HStack {
                                 Image(systemName: "cloud.rain.fill")
                                 Text("72º")

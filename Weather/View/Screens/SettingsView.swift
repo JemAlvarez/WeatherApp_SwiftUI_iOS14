@@ -54,7 +54,7 @@ struct SettingsView: View {
                     Text("Moonlight")
                         .padding(.horizontal, 15)
                         .padding(.vertical, 7)
-                        .background(Color("purple"))
+                        .background(Color("purple").opacity(0.5))
                         .clipShape(Capsule())
                         .font(.headline)
                     
