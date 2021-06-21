@@ -25,16 +25,16 @@ struct CitiesView: View {
                         
                         // cities tiles
                         HStack (spacing: 20) {
-                            CityView(temp: 22, city: "Austin", country: "usa", image: "sunny", rain: 27, wind: 4.4, showButtons: $editing)
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "clear_sky", rain: 27, wind: 4.4, showButtons: $editing)
                             CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
                         }
                         HStack (spacing: 20) {
-                            CityView(temp: 22, city: "Austin", country: "usa", image: "cloudySun", rain: 27, wind: 4.4, showButtons: $editing)
-                            CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "few_clouds", rain: 27, wind: 4.4, showButtons: $editing)
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "mist", rain: 27, wind: 4.4, showButtons: $editing)
                         }
                         HStack (spacing: 20) {
-                            CityView(temp: 22, city: "Austin", country: "usa", image: "moon", rain: 27, wind: 4.4, showButtons: $editing)
-                            CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "snow", rain: 27, wind: 4.4, showButtons: $editing)
+                            CityView(temp: 22, city: "Austin", country: "usa", image: "rain", rain: 27, wind: 4.4, showButtons: $editing)
                         }
                     }
                     .padding(.horizontal)

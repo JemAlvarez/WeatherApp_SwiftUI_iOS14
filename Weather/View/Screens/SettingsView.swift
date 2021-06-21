@@ -35,12 +35,14 @@ struct SettingsView: View {
                     }
                     .offset(y: headerOffset)
                     
+                    Spacer()
+                    
                     // weather image
                     ZStack {
                         Color("backgroundLight")
                             .clipShape(Circle())
                             .blur(radius: 25)
-                        Image("moonSun")
+                        Image("shower_rain")
                             .resizable()
                             .scaledToFit()
                             .frame(width: UIScreen.main.bounds.width / 2)
@@ -56,6 +58,8 @@ struct SettingsView: View {
                         .clipShape(Capsule())
                         .font(.headline)
                     
+                    Spacer()
+                    
                     // temperature
                     HStack (spacing: 0) {
                         Text("20")
@@ -65,6 +69,8 @@ struct SettingsView: View {
                     }
                     .font(.system(size: 40).bold())
                     .padding(.vertical)
+                    
+                    Spacer()
                     
                     // data info
                     VStack (spacing: 15) {
