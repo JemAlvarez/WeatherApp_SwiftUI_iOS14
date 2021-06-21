@@ -13,16 +13,31 @@ struct SettingsView: View {
     @State var locationStatus = "Allowed"
     @State var tempDegree = "F"
     @State var windSpeedUnit = "mph"
+    @State var animationOpacity: Double = 0
     
     var body: some View {
         // view
         CustomScreenView(customScreen: {
             VStack (spacing: 0) {
                 if locationStatus == "Allowed" {
-                    // top info
+                    // top info header
                     VStack {
                         HStack {
-                            Image(systemName: "target")
+                            ZStack {
+                                Circle()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.accentColor)
+                                    .opacity(animationOpacity)
+                                    .animation(Animation.easeInOut(duration: 0.7).repeatForever(autoreverses: true))
+                                
+                                Image(systemName: "target")
+                            }
+                            .onAppear{
+                                withAnimation {
+                                    animationOpacity = 0.7
+                                }
+                            }
+                            
                             Text("Your Location Now")
                         }
                         .font(.subheadline)
@@ -32,8 +47,8 @@ struct SettingsView: View {
                         
                         Text("San Fransisco, California, USA")
                             .font(.title2)
+                            .offset(y: headerOffset)
                     }
-                    .offset(y: headerOffset)
                     
                     Spacer()
                     

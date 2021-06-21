@@ -13,7 +13,8 @@ struct CityView: View {
     
     @EnvironmentObject var tabSelection: TabSelection
     @State private var animate = false
-    @State private var widgetWidth: CGFloat = 0
+    
+    let widgetWidth: CGFloat = UIScreen.main.bounds.width / 2.4
     
     var body: some View {
         ZStack (alignment: .top) {
@@ -105,22 +106,6 @@ struct CityView: View {
                 }
             }
             
-        }
-        .onChange(of: tabSelection.tab) {newValue in
-            if newValue == "cities" {
-                withAnimation {
-                    widgetWidth = UIScreen.main.bounds.width / 2.4
-                }
-            } else {
-                widgetWidth = (UIScreen.main.bounds.width / 2.4) / 1.2
-            }
-        }
-        .onAppear {
-            if tabSelection.tab == "cities" {
-                withAnimation {
-                    widgetWidth = UIScreen.main.bounds.width / 2.4
-                }
-            }
         }
     }
 }

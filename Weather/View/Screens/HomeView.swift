@@ -4,6 +4,9 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var tabSelection: TabSelection
+    @State var mainInfoOffset: CGFloat = -100
+    @State var imageOffset: CGFloat = 100
+    
     var body: some View {
         // view
         CustomScreenView(customScreen: {
@@ -28,6 +31,7 @@ struct HomeView: View {
                                 .clipShape(Capsule())
                                 .font(.headline)
                         }
+                        .offset(x: mainInfoOffset)
                         
                         Spacer()
                         
@@ -35,6 +39,7 @@ struct HomeView: View {
                         Image("few_clouds")
                             .resizable()
                             .scaledToFit()
+                            .offset(x: imageOffset)
                     }
                     
                     // data info
@@ -104,16 +109,35 @@ struct HomeView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 30)
             }
-            .edgesIgnoringSafeArea(.bottom)
+            .padding(.bottom)
         }, background: {
             // view background
             Color("background").edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
         })
+        .onChange(of: tabSelection.tab) { newValue in
+            if newValue == "home" {
+                withAnimation {
+                    mainInfoOffset = 0
+                    imageOffset = 0
+                }
+            } else {
+                mainInfoOffset = -100
+                imageOffset = 100
+            }
+        }
+        .onAppear {
+            if tabSelection.tab == "home" {
+                withAnimation {
+                    mainInfoOffset = 0
+                    imageOffset = 0
+                }
+            }
+        }
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView().environmentObject(TabSelection())
     }
 }
