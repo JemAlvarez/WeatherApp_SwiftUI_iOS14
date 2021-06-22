@@ -8,11 +8,10 @@ struct SettingsView: View {
     // states
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var tabSelection: TabSelection
+    @EnvironmentObject var cityViewModel: CityViewModel
     @State var imageZoom: CGFloat = 1
     @State var headerOffset: CGFloat = 0
     @State var locationStatus = "Allowed"
-    @State var tempDegree = "F"
-    @State var windSpeedUnit = "mph"
     @State var animationOpacity: Double = 0
     
     var body: some View {
@@ -120,46 +119,27 @@ struct SettingsView: View {
                     // temp f/c
                     Menu {
                         Button(action: {
-                            tempDegree = "F"
+                            cityViewModel.unit = "metric"
                         }) {
-                            Text("Farenheit")
+                            Text("Metric")
                         }
                         
                         Button(action: {
-                            tempDegree = "C"
+                            cityViewModel.unit = "imperial"
                         }) {
-                            Text("Celcius")
+                            Text("Imperial")
                         }
                     }
                     label: {
                         VStack (spacing: 5) {
-                            Image(systemName: "thermometer")
-                            Text(tempDegree)
+                            HStack {
+                                Image(systemName: "thermometer")
+                                Text("/")
+                                Image(systemName: "wind")
+                            }
+                            Text(cityViewModel.unit.capitalized)
                                 .opacity(0.4)
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    // wind
-                    Menu {
-                        Button(action: {
-                            windSpeedUnit = "m/s"
-                        }) {
-                            Text("m/s")
-                        }
-                        
-                        Button(action: {
-                            windSpeedUnit = "mph"
-                        }) {
-                            Text("mph")
-                        }
-                    }
-                    label: {
-                        VStack (spacing: 5) {
-                            Image(systemName: "wind")
-                            Text(windSpeedUnit)
-                                .opacity(0.4)
+                                .frame(width: 80)
                         }
                     }
                     
@@ -231,6 +211,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView().environmentObject(LocationManager()).environmentObject(TabSelection())
+        SettingsView().environmentObject(LocationManager()).environmentObject(TabSelection()).environmentObject(CityViewModel())
     }
 }

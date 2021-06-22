@@ -6,6 +6,7 @@ struct MainView: View {
     // environment
     @StateObject var tabSelection = TabSelection()
     @StateObject var locationManager = LocationManager()
+    @StateObject var cityViewModel = CityViewModel()
     
     var body: some View {
         // tab view
@@ -36,6 +37,10 @@ struct MainView: View {
         .font(.system(size: 17))
         .environmentObject(tabSelection)
         .environmentObject(locationManager)
+        .environmentObject(cityViewModel)
+        .onAppear {
+            cityViewModel.cityRequest(lat: "33.44", lon: "-94.04")
+        }
     }
 }
 

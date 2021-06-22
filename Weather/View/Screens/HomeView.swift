@@ -4,6 +4,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var tabSelection: TabSelection
+    @EnvironmentObject var cityViewModel: CityViewModel
     @State var mainInfoOffset: CGFloat = -100
     @State var imageOffset: CGFloat = 100
     
@@ -21,7 +22,7 @@ struct HomeView: View {
                             Text("San Francisco")
                                 .font(.system(size: 22))
                             
-                            Text("18º")
+                            Text("\(cityViewModel.city.cityData.current.temp, specifier: "%.1f")º")
                                 .font(.system(size: 70).bold())
                             
                             Text("Cloudy")
@@ -70,7 +71,9 @@ struct HomeView: View {
                             SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .system(size: 16))
                         }
                     }
-                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color("backgroundLight").opacity(0.7))
+                    .cornerRadius(20)
                     
                     // _____ RAIN GRAPH _____
                     
