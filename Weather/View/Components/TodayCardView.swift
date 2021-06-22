@@ -10,7 +10,7 @@ struct TodayCardView: View {
     var body: some View {
         VStack {
             Text(time)
-                .font(.footnote)
+                .font(.system(size: 13))
             
             Spacer()
             
@@ -22,7 +22,7 @@ struct TodayCardView: View {
             Spacer()
             
             Text(temp)
-                .font(.title2)
+                .font(.system(size: 22))
         }
         .frame(height: 110)
     }

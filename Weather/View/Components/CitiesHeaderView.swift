@@ -4,15 +4,14 @@ import SwiftUI
 
 struct CitiesHeaderView: View {
     @Binding var editing: Bool
+    @Binding var showingSearchList: Bool
+    @Binding var search: String
+    @Binding var searching: Bool
     
-    @State var search = ""
     @State var searchFieldWidth: CGFloat = .infinity
-    @State var searching = false
-    @State var showingSearchList = false
     
     var body: some View {
         ZStack {
-            NavigationLink(destination: SearchListView(searchTerm: $search), isActive: $showingSearchList) {EmptyView()}
             HStack {
                 Button(action: {
                     withAnimation {
@@ -25,7 +24,9 @@ struct CitiesHeaderView: View {
                 HStack {
                     TextField("Search", text: $search, onCommit:  {
                         if !search.isEmpty {
-                            showingSearchList = true
+                            withAnimation {
+                                showingSearchList = true
+                            }
                         }
                     })
                     
@@ -40,7 +41,7 @@ struct CitiesHeaderView: View {
                         }
                     }) {
                         Image(systemName: "xmark.circle.fill")
-                            .font(.title3)
+                            .font(.system(size: 20))
                             .foregroundColor(.accentColor)
                     }
                     .offset(x: searching ? 0 : 500)
@@ -59,13 +60,13 @@ struct CitiesHeaderView: View {
                 }
             }
             .padding(.horizontal)
-            .font(.title2)
+            .font(.system(size: 23))
         }
     }
 }
 
 struct CitiesHeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        CitiesHeaderView(editing: .constant(false))
+        CitiesHeaderView(editing: .constant(true), showingSearchList: .constant(false), search: .constant(""), searching: .constant(false))
     }
 }

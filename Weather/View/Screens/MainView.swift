@@ -33,6 +33,7 @@ struct MainView: View {
                 .tag("settings")
         }
         .foregroundColor(.white)
+        .font(.system(size: 17))
         .environmentObject(tabSelection)
         .environmentObject(locationManager)
     }

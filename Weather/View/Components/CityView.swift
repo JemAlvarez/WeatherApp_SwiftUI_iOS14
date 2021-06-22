@@ -25,19 +25,16 @@ struct CityView: View {
                     // LEFT
                     VStack (alignment: .leading, spacing: 0) {
                         HStack {
-                            Text("\(temp)")
-                                 .font(.largeTitle)
-                             Text("º")
-                                .font(.title)
-                                .offset(x: -7, y: -12)
+                            Text("\(temp)º")
+                                 .font(.system(size: 35))
                         }
                         Text(city)
                             .padding(.top, 7)
-                            .font(.headline)
+                            .font(.system(size: 17))
                             .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                        Text(country.capitalized)
+                        Text(country.uppercased())
                             .padding(.top, 4)
-                            .font(.footnote)
+                            .font(.system(size: 13))
                             .opacity(0.5)
                     }
                     
@@ -57,9 +54,9 @@ struct CityView: View {
                 
                 // BOTTOM
                 HStack {
-                    SmallDataView(image: "drop", data: Text("\(rain)%"), font: .caption2)
+                    SmallDataView(image: "drop", data: Text("\(rain)%"), font: .system(size: 11))
                     Spacer()
-                    SmallDataView(image: "wind", data: Text("\(wind, specifier: "%.1f") mph"), font: .caption2)
+                    SmallDataView(image: "wind", data: Text("\(wind, specifier: "%.1f") mph"), font: .system(size: 11))
                     
                 }
                 .padding(.bottom, 20)
@@ -86,8 +83,8 @@ struct CityView: View {
                 }
                 
                 ZStack {
-                    Color.white.frame(width: 15, height: 15)
-                    Image(systemName: "x.circle.fill")
+                    Color.white.frame(width: 19, height: 19)
+                    Image(systemName: "trash.circle.fill")
                         .foregroundColor(.red)
                 }
                 .rotationEffect(animate ? Angle(degrees: 20) : .zero)
@@ -96,10 +93,10 @@ struct CityView: View {
                     // delete city button
                 }
             }
-            .font(.title)
+            .font(.system(size: 30))
             .frame(width: widgetWidth)
             .offset(x: 15,y: -15)
-            .isHidden(showButtons)
+            .isHidden(!showButtons)
             .onAppear {
                 withAnimation(Animation.easeInOut(duration: 0.15).repeatForever(autoreverses: true)) {
                     animate.toggle()
@@ -112,6 +109,7 @@ struct CityView: View {
 
 struct CityView_Previews: PreviewProvider {
     static var previews: some View {
-        CityView(temp: 22, city: "Austin", country: "usa", image: "sunny", rain: 27, wind: 4.4, showButtons: .constant(false))
+        CityView(temp: 22, city: "Austin", country: "usa", image: "clear_sky", rain: 27, wind: 4.4, showButtons: .constant(true))
+            .environmentObject(TabSelection())
     }
 }

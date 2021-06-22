@@ -30,7 +30,7 @@ struct DailyRowView: View {
                     .opacity(0.5)
             }
             .frame(width: 80)
-            .font(.title3)
+            .font(.system(size: 20))
         }
     }
 }

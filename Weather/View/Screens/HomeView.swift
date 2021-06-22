@@ -19,7 +19,7 @@ struct HomeView: View {
                         // temp info
                         VStack (alignment: .leading) {
                             Text("San Francisco")
-                                .font(.title2)
+                                .font(.system(size: 22))
                             
                             Text("18º")
                                 .font(.system(size: 70).bold())
@@ -29,7 +29,7 @@ struct HomeView: View {
                                 .padding(.vertical, 7)
                                 .background(Color("purple").opacity(0.5))
                                 .clipShape(Capsule())
-                                .font(.headline)
+                                .font(.system(size: 17).bold())
                         }
                         .offset(x: mainInfoOffset)
                         
@@ -46,28 +46,28 @@ struct HomeView: View {
                     VStack (spacing: 15) {
                         // top info
                         HStack {
-                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .body)
+                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .system(size: 16))
                             
                             Spacer()
                             
-                            SmallDataView(image: "drop", data: Text("7%"), font: .body)
+                            SmallDataView(image: "drop", data: Text("7%"), font: .system(size: 16))
                             
                             Spacer()
                             
-                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .body)
+                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .system(size: 16))
                         }
                         
                         // bot info
                         HStack {
-                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .body)
+                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .system(size: 16))
                             
                             Spacer()
                             
-                            SmallDataView(image: "drop", data: Text("7%"), font: .body)
+                            SmallDataView(image: "drop", data: Text("7%"), font: .system(size: 16))
                             
                             Spacer()
                             
-                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .body)
+                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .system(size: 16))
                         }
                     }
                     .frame(maxWidth: .infinity)

@@ -37,7 +37,7 @@ struct MapView: View {
                         // left title
                         CustomMapUIView {
                             Text(location)
-                                .font(.title)
+                                .font(.system(size: 30))
                                 .padding(.horizontal)
                         }
                         .padding([.horizontal,.top], 30)
@@ -203,5 +203,7 @@ struct MapView: View {
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
         MapView()
+            .environmentObject(TabSelection())
+            .environmentObject(LocationManager())
     }
 }

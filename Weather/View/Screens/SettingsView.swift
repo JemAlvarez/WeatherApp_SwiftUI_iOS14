@@ -40,13 +40,13 @@ struct SettingsView: View {
                             
                             Text("Your Location Now")
                         }
-                        .font(.subheadline)
+                        .font(.system(size: 17))
                         .opacity(0.4)
                         .padding(.bottom, 2)
                         .padding(.top, 10)
                         
                         Text("San Fransisco, California, USA")
-                            .font(.title2)
+                            .font(.system(size: 21))
                             .offset(y: headerOffset)
                     }
                     
@@ -71,15 +71,13 @@ struct SettingsView: View {
                         .padding(.vertical, 7)
                         .background(Color("purple").opacity(0.5))
                         .clipShape(Capsule())
-                        .font(.headline)
+                        .font(.system(size: 17).bold())
                     
                     Spacer()
                     
                     // temperature
                     HStack (spacing: 0) {
-                        Text("20")
-                        Text("º")
-                            .offset(y: -15)
+                        Text("20º")
                         Text("C")
                     }
                     .font(.system(size: 40).bold())
@@ -91,25 +89,25 @@ struct SettingsView: View {
                     VStack (spacing: 15) {
                         // top info
                         HStack (spacing: 30) {
-                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .body)
+                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .system(size: 16))
                             
-                            SmallDataView(image: "drop", data: Text("7%"), font: .body)
+                            SmallDataView(image: "drop", data: Text("7%"), font: .system(size: 16))
                             
-                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .body)
+                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .system(size: 16))
                         }
                         
                         // bot info
                         HStack (spacing: 30) {
-                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .body)
+                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .system(size: 16))
                             
-                            SmallDataView(image: "drop", data: Text("7%"), font: .body)
+                            SmallDataView(image: "drop", data: Text("7%"), font: .system(size: 16))
                             
-                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .body)
+                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .system(size: 16))
                         }
                     }
                 } else {
                     Text("Allow location privacy settings to see your current location inforamtion.")
-                        .font(.title3)
+                        .font(.system(size: 20))
                         .multilineTextAlignment(.center)
                         .padding(50)
                         .opacity(0.4)
