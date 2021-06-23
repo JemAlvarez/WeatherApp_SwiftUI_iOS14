@@ -37,7 +37,7 @@ struct HomeView: View {
                         Spacer()
                         
                         // image
-                        Image("few_clouds")
+                        Image(cityViewModel.getWeatherImage(id: cityViewModel.city.cityData.current.weather[0].id))
                             .resizable()
                             .scaledToFit()
                             .offset(x: imageOffset)
@@ -97,16 +97,9 @@ struct HomeView: View {
                     
                     // daily forecast
                     VStack {
-                        DailyRowView(day: "Today", image: "clear_sky", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Tuesday", image: "few_clouds", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Wednesday", image: "mist", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Thursday", image: "rain", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Friday", image: "scattered_clouds", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Saturday", image: "shower_rain", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Sunday", image: "snow", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Monday", image: "thunderstorm", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Tuesday", image: "clear_sky", tempLow: "15", tempHigh: "19")
-                        DailyRowView(day: "Wednesday", image: "rain", tempLow: "15", tempHigh: "19")
+                        ForEach(0..<cityViewModel.city.cityData.daily.count, id: \.self) { i in
+                            DailyRowView(day: "Wednesday", image: cityViewModel.getWeatherImage(id: cityViewModel.city.cityData.daily[i].weather[0].id), tempLow: "\(Int(cityViewModel.city.cityData.daily[i].temp.min))", tempHigh: "\(Int(cityViewModel.city.cityData.daily[i].temp.max))")
+                        }
                     }
                 }
                 .padding(.horizontal, 30)

@@ -1,6 +1,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct MainView: View {
     // environment
@@ -35,11 +36,21 @@ struct MainView: View {
         }
         .foregroundColor(.white)
         .font(.system(size: 17))
+        .preferredColorScheme(.dark)
         .environmentObject(tabSelection)
         .environmentObject(locationManager)
         .environmentObject(cityViewModel)
         .onAppear {
-            cityViewModel.cityRequest(lat: "33.44", lon: "-94.04")
+            // get main city data
+            cityViewModel.cityRequest(lat: "33.44", lon: "-94.04", save: "main")
+            
+            // set current location coords
+            locationManager.coords = locationManager.manager.location?.coordinate ?? CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)
+            
+            // get current city data
+            if locationManager.locationStatus == .authorizedWhenInUse {
+                cityViewModel.cityRequest(lat: "\(locationManager.coords.latitude)", lon: "\(locationManager.coords.longitude)", save: "current")
+            }
         }
     }
 }
