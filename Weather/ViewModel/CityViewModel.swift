@@ -1,18 +1,22 @@
 //
 
 import Foundation
+import CoreLocation
 
 class CityViewModel: ObservableObject {
-    @Published var city: CityModel = CityModel(cityData: miscData.tempCityModel)
-    @Published var currentLocationData = CityModel(cityData: miscData.tempCityModel)
+    @Published var city: CityModel = CityModel(cityName: "", cityData: miscData.tempCityModel)
+    @Published var currentLocationData = CityModel(cityName: "", cityData: miscData.tempCityModel)
+    @Published var mapCity = CityModel(cityName: "", cityData: miscData.tempCityModel)
     @Published var unit = "imperial"
     
-    func cityRequest(lat: String, lon: String, save: String) {
-        ApiModel().getCity(lat: lat, lon: lon, unit: unit) { city in
+    func cityRequest(location: CLLocation, save: String) {
+        ApiModel().getCity(location: location, unit: unit) { city in
             if save == "main" {
                 self.city = city
             } else if save == "current" {
                 self.currentLocationData = city
+            } else if save == "map" {
+                self.mapCity = city
             }
         }
     }

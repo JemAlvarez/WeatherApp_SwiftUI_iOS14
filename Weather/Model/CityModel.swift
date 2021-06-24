@@ -4,6 +4,7 @@ import Foundation
 
 struct CityModel: Identifiable {
     let id = UUID()
+    var cityName: String
     let cityData: CityData
 }
 

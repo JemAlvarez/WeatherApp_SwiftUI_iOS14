@@ -20,4 +20,25 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             manager.requestWhenInUseAuthorization()
         }
     }
+    
+    func getLocationName(location: CLLocation, completion: @escaping (String) -> ()) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { placemarks, _  in
+            guard let place = placemarks?.first else {
+                return
+            }
+            
+            var cityName = ""
+            
+            if let city = place.locality {
+                cityName += city
+            }
+            
+            if let state = place.administrativeArea {
+                cityName += ", \(state)"
+            }
+            
+            completion(cityName)
+        }
+    }
 }

@@ -42,14 +42,14 @@ struct MainView: View {
         .environmentObject(cityViewModel)
         .onAppear {
             // get main city data
-            cityViewModel.cityRequest(lat: "33.44", lon: "-94.04", save: "main")
+            cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 0, longitude: 0), save: "main")
             
             // set current location coords
             locationManager.coords = locationManager.manager.location?.coordinate ?? CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)
             
             // get current city data
             if locationManager.locationStatus == .authorizedWhenInUse {
-                cityViewModel.cityRequest(lat: "\(locationManager.coords.latitude)", lon: "\(locationManager.coords.longitude)", save: "current")
+                cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 0, longitude: 0), save: "current")
             }
         }
     }

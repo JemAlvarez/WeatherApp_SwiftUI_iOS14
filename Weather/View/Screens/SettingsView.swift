@@ -78,7 +78,7 @@ struct SettingsView: View {
                         
                         // temperature
                         HStack (spacing: 0) {
-                            Text("\(cityViewModel.currentLocationData.cityData.current.temp, specifier: "%.1f")º")
+                            Text("\(Int(cityViewModel.currentLocationData.cityData.current.temp))º")
                             Text(cityViewModel.unit == "imperial" ? "F" : "C")
                         }
                         .font(.system(size: 40).bold())
@@ -245,10 +245,10 @@ struct SettingsView: View {
     }
     
     func changeOnUnit() {
-        cityViewModel.cityRequest(lat: "33.44", lon: "-94.04", save: "main")
+        cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 0, longitude: 0), save: "main")
         
         if locationManager.locationStatus == .authorizedWhenInUse {
-            cityViewModel.cityRequest(lat: "\(locationManager.manager.location!.coordinate.latitude)", lon: "\(locationManager.manager.location!.coordinate.longitude)", save: "current")
+            cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 0, longitude: 0), save: "current")
         }
     }
 }

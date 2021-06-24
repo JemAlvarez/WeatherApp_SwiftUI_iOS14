@@ -12,8 +12,9 @@ struct MapView: View {
     @State var citySet = false
     @State var cityFav = false
     @State var tracking: MapUserTrackingMode = .follow
-    @State var location = "London"
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @EnvironmentObject var tabSelection: TabSelection
+    @EnvironmentObject var cityViewModel: CityViewModel
     
     // body
     var body: some View {
@@ -36,8 +37,9 @@ struct MapView: View {
                     HStack (alignment: .top) {
                         // left title
                         CustomMapUIView {
-                            Text(location)
-                                .font(.system(size: 30))
+                            Text(cityViewModel.mapCity.cityName)
+                                .lineLimit(1)
+                                .font(.system(size: 20))
                                 .padding(.horizontal)
                         }
                         .padding([.horizontal,.top], 30)
@@ -152,9 +154,11 @@ struct MapView: View {
                         // right forecast
                         CustomMapUIView {
                             HStack {
-                                Image(systemName: "cloud.rain.fill")
-                                Text("72º")
-                                    .opacity(0.5)
+                                Image(cityViewModel.getWeatherImage(id: cityViewModel.mapCity.cityData.current.weather[0].id))
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20)
+                                Text("\(Int(cityViewModel.mapCity.cityData.current.temp))º")
                             }
                         }
                         .padding(30)
@@ -181,6 +185,16 @@ struct MapView: View {
                 region.span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
             }
         }
+        .onReceive(timer, perform: { _ in
+            locationManager.getLocationName(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) { str in
+                if cityViewModel.mapCity.cityName != str {
+                    print("ran")
+                    cityViewModel.cityRequest(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude), save: "map")
+                    cityViewModel.mapCity.cityName = str
+                    
+                }
+            }
+        })
     }
     
     // get zoom increment
