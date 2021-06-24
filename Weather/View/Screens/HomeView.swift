@@ -19,10 +19,10 @@ struct HomeView: View {
                     HStack {
                         // temp info
                         VStack (alignment: .leading) {
-                            Text(cityViewModel.city.cityName.components(separatedBy: ",")[0])
+                            Text(cityViewModel.mainCity.cityName.components(separatedBy: ",")[0])
                                 .font(.system(size: 22))
                             
-                            Text("\(Int(cityViewModel.city.cityData.current.temp))º")
+                            Text("\(Int(cityViewModel.mainCity.cityData.current.temp))º")
                                 .font(.system(size: 70).bold())
                             
                             Text("Cloudy")
@@ -37,7 +37,7 @@ struct HomeView: View {
                         Spacer()
                         
                         // image
-                        Image(cityViewModel.getWeatherImage(id: cityViewModel.city.cityData.current.weather[0].id))
+                        Image(cityViewModel.getWeatherImage(id: cityViewModel.mainCity.cityData.current.weather[0].id))
                             .resizable()
                             .scaledToFit()
                             .offset(x: imageOffset)
@@ -97,8 +97,8 @@ struct HomeView: View {
                     
                     // daily forecast
                     VStack {
-                        ForEach(0..<cityViewModel.city.cityData.daily.count, id: \.self) { i in
-                            DailyRowView(day: "Wednesday", image: cityViewModel.getWeatherImage(id: cityViewModel.city.cityData.daily[i].weather[0].id), tempLow: "\(Int(cityViewModel.city.cityData.daily[i].temp.min))", tempHigh: "\(Int(cityViewModel.city.cityData.daily[i].temp.max))")
+                        ForEach(0..<cityViewModel.mainCity.cityData.daily.count, id: \.self) { i in
+                            DailyRowView(day: "Wednesday", image: cityViewModel.getWeatherImage(id: cityViewModel.mainCity.cityData.daily[i].weather[0].id), tempLow: "\(Int(cityViewModel.mainCity.cityData.daily[i].temp.min))", tempHigh: "\(Int(cityViewModel.mainCity.cityData.daily[i].temp.max))")
                         }
                     }
                 }

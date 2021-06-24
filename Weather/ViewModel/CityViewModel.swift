@@ -2,19 +2,21 @@
 
 import Foundation
 import CoreLocation
+import CoreData
 
 class CityViewModel: ObservableObject {
-    @Published var city: CityModel = CityModel(cityName: "", cityData: miscData.tempCityModel)
-    @Published var currentLocationData = CityModel(cityName: "", cityData: miscData.tempCityModel)
+    @Published var mainCity = CityModel(cityName: "", cityData: miscData.tempCityModel)
+    @Published var currentLocationCity = CityModel(cityName: "", cityData: miscData.tempCityModel)
     @Published var mapCity = CityModel(cityName: "", cityData: miscData.tempCityModel)
+    @Published var savedCities: [CityModel] = []
     @Published var unit = "imperial"
     
     func cityRequest(location: CLLocation, save: String) {
         ApiModel().getCity(location: location, unit: unit) { city in
             if save == "main" {
-                self.city = city
+                self.mainCity = city
             } else if save == "current" {
-                self.currentLocationData = city
+                self.currentLocationCity = city
             } else if save == "map" {
                 self.mapCity = city
             }
@@ -56,5 +58,13 @@ class CityViewModel: ObservableObject {
         formatter.dateFormat = "h:mm a"
         
         return formatter.string(from: date)
+    }
+    
+    func initialDataLoad() {
+        let appData = AppData(context: PersistenceController.shared.container.viewContext)
+        appData.unit = "imperial"
+        appData.mainIsCurrent = false
+        
+        PersistenceController.shared.saveContext()
     }
 }

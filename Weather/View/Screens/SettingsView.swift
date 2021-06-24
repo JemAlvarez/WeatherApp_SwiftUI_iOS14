@@ -15,6 +15,9 @@ struct SettingsView: View {
     @State var animationOpacity: Double = 0
     @State var citySet = false
     
+    @FetchRequest(sortDescriptors: [])
+    var appData: FetchedResults<AppData>
+    
     var body: some View {
         // view
         CustomScreenView(customScreen: {
@@ -58,7 +61,7 @@ struct SettingsView: View {
                             Color("backgroundLight")
                                 .clipShape(Circle())
                                 .blur(radius: 25)
-                            Image(cityViewModel.getWeatherImage(id: cityViewModel.currentLocationData.cityData.current.weather[0].id))
+                            Image(cityViewModel.getWeatherImage(id: cityViewModel.currentLocationCity.cityData.current.weather[0].id))
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: UIScreen.main.bounds.width / 2)
@@ -67,7 +70,7 @@ struct SettingsView: View {
                         .scaleEffect(imageZoom)
                         
                         // caption
-                        Text(cityViewModel.currentLocationData.cityData.current.weather[0].main)
+                        Text(cityViewModel.currentLocationCity.cityData.current.weather[0].main)
                             .padding(.horizontal, 15)
                             .padding(.vertical, 7)
                             .background(Color("purple").opacity(0.5))
@@ -78,7 +81,7 @@ struct SettingsView: View {
                         
                         // temperature
                         HStack (spacing: 0) {
-                            Text("\(Int(cityViewModel.currentLocationData.cityData.current.temp))º")
+                            Text("\(Int(cityViewModel.currentLocationCity.cityData.current.temp))º")
                             Text(cityViewModel.unit == "imperial" ? "F" : "C")
                         }
                         .font(.system(size: 40).bold())
@@ -90,24 +93,24 @@ struct SettingsView: View {
                         VStack (alignment: .leading, spacing: 15) {
                             // top info
                             HStack (spacing: 10) {
-                                SmallDataView(image: "sunrise.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationData.cityData.current.sunrise)), font: .system(size: 15))
+                                SmallDataView(image: "sunrise.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationCity.cityData.current.sunrise)), font: .system(size: 15))
                                     .frame(width: 100)
                                                                 
-                                SmallDataView(image: "drop", data: Text("\(Int(cityViewModel.currentLocationData.cityData.daily[0].pop))%"), font: .system(size: 15))
+                                SmallDataView(image: "drop", data: Text("\(Int(cityViewModel.currentLocationCity.cityData.daily[0].pop * 100))%"), font: .system(size: 15))
                                     .frame(width: 80)
                                                                 
-                                SmallDataView(image: "wind", data: Text("\(cityViewModel.currentLocationData.cityData.current.wind_speed, specifier: "%.1f") \(cityViewModel.unit == "imperial" ? "mph" : "m/s")"), font: .system(size: 15))
+                                SmallDataView(image: "wind", data: Text("\(cityViewModel.currentLocationCity.cityData.current.wind_speed, specifier: "%.1f") \(cityViewModel.unit == "imperial" ? "mph" : "m/s")"), font: .system(size: 15))
                             }
                             
                             // bot info
                             HStack (spacing: 10) {
-                                SmallDataView(image: "sunset.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationData.cityData.current.sunset)), font: .system(size: 15))
+                                SmallDataView(image: "sunset.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationCity.cityData.current.sunset)), font: .system(size: 15))
                                     .frame(width: 100)
                                                                 
-                                SmallDataView(image: "drop.triangle", data: Text("\(Int(cityViewModel.currentLocationData.cityData.current.humidity))%"), font: .system(size: 15))
+                                SmallDataView(image: "drop.triangle", data: Text("\(Int(cityViewModel.currentLocationCity.cityData.current.humidity))%"), font: .system(size: 15))
                                     .frame(width: 80)
                                                                 
-                                SmallDataView(image: "speedometer", data: Text("\(Int(cityViewModel.currentLocationData.cityData.current.pressure)) mbar"), font: .system(size: 15))
+                                SmallDataView(image: "speedometer", data: Text("\(Int(cityViewModel.currentLocationCity.cityData.current.pressure)) hpa"), font: .system(size: 15))
                             }
                         }
                     } else {
@@ -125,6 +128,8 @@ struct SettingsView: View {
                         // temp f/c
                         Menu {
                             Button(action: {
+                                appData[0].unit = "metric"
+                                PersistenceController.shared.saveContext()
                                 cityViewModel.unit = "metric"
                                 changeOnUnit()
                             }) {
@@ -132,6 +137,8 @@ struct SettingsView: View {
                             }
                             
                             Button(action: {
+                                appData[0].unit = "imperial"
+                                PersistenceController.shared.saveContext()
                                 cityViewModel.unit = "imperial"
                                 changeOnUnit()
                             }) {
@@ -154,7 +161,7 @@ struct SettingsView: View {
                         Spacer()
                         
                         Button(action: {
-                            cityViewModel.city = cityViewModel.currentLocationData
+                            cityViewModel.mainCity = cityViewModel.currentLocationCity
                             
                             withAnimation {
                                 citySet = true

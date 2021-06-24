@@ -9,6 +9,9 @@ struct MainView: View {
     @StateObject var locationManager = LocationManager()
     @StateObject var cityViewModel = CityViewModel()
     
+    @FetchRequest(sortDescriptors: [])
+    var appData: FetchedResults<AppData>
+    
     var body: some View {
         // tab view
         TabView (selection: $tabSelection.tab) {
@@ -41,6 +44,13 @@ struct MainView: View {
         .environmentObject(locationManager)
         .environmentObject(cityViewModel)
         .onAppear {
+            print("____DATA___", appData)
+            if appData.isEmpty {
+                cityViewModel.initialDataLoad()
+            }
+            
+            cityViewModel.unit = appData[0].unit ?? "imperial"
+            
             // get main city data
             cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 0, longitude: 0), save: "main")
             
@@ -53,6 +63,10 @@ struct MainView: View {
             }
         }
     }
+}
+
+class TabSelection: ObservableObject {
+    @Published var tab = "home"
 }
 
 struct MainView_Previews: PreviewProvider {
