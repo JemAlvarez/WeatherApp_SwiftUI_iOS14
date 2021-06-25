@@ -165,12 +165,27 @@ struct SettingsView: View {
                         Button(action: {
                             cityViewModel.mainCity = cityViewModel.currentLocationCity
                             
+                            for coreCity in cities {
+                                if coreCity.type == "main" {
+                                    PersistenceController.shared.container.viewContext.delete(coreCity)
+                                    PersistenceController.shared.saveContext()
+                                }
+                            }
+                            
+                            let addCity = City(context: PersistenceController.shared.container.viewContext)
+                            addCity.lat = locationManager.manager.location?.coordinate.latitude ?? 51.507222
+                            addCity.lon = locationManager.manager.location?.coordinate.longitude ?? -0.1275
+                            addCity.type = "main"
+                            PersistenceController.shared.saveContext()
+                            
                             withAnimation {
                                 citySet = true
                             }
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                citySet = false
+                                withAnimation {
+                                    citySet = false
+                                }
                             }
                         }) {
                             VStack (spacing: 5) {
@@ -237,12 +252,19 @@ struct SettingsView: View {
         .onChange(of: locationManager.locationStatus) { newValue in
             if newValue == .authorizedWhenInUse {
                 locationStatus = "Allowed"
+                cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current")
             } else {
                 locationStatus = "Not Allowed"
             }
         }
         .onAppear {
             locationStatus = locationManager.manager.authorizationStatus == .authorizedWhenInUse ? "Allowed" : "Not Allowed"
+            
+            locationManager.getLocationName(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275)) { c in
+                if cityViewModel.currentLocationCity.cityName.city != c.city {
+                    cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current")
+                }
+            }
             
             if tabSelection.tab == "settings" {
                 withAnimation {
@@ -254,15 +276,20 @@ struct SettingsView: View {
     }
     
     func changeOnUnit() {
-        cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 0, longitude: 0), save: "main")
+        // main
+        cityViewModel.cityRequest(location: CLLocation(latitude: cityViewModel.mainCity.cityData.lat, longitude: cityViewModel.mainCity.cityData.lon), save: "main")
         
+        // current
         if locationManager.locationStatus == .authorizedWhenInUse {
-            cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 0, longitude: 0), save: "current")
+            cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current")
         }
         
+        // saved
         cityViewModel.savedCities = []
         for city in cities {
-            cityViewModel.cityRequest(location: CLLocation(latitude: city.lat, longitude: city.lon), save: "saved")
+            if city.type == "saved" {
+                cityViewModel.cityRequest(location: CLLocation(latitude: city.lat, longitude: city.lon), save: "saved")
+            }
         }
     }
 }

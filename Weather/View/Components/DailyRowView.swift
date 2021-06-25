@@ -16,12 +16,13 @@ struct DailyRowView: View {
             
             Spacer()
             
-            HStack {
+            ZStack {
                 if pop != nil {
                     Text("\(pop!)%")
                         .foregroundColor(.accentColor)
                         .font(.system(size: 15))
                         .padding(0)
+                        .offset(x: -50)
                 }
                 Image(image)
                     .resizable()

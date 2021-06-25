@@ -27,14 +27,26 @@ struct SearchView: View {
                 
                 Button(action: {
                     if cities.count <= 5 {
-                        // add cities view model
-                        cityViewModel.savedCities.append(cityViewModel.searchCity)
+                        var canAdd = true
+                        for city in cities {
+                            if city.lat == cityViewModel.searchCity.cityData.lat && city.lon == cityViewModel.searchCity.cityData.lon {
+                                canAdd.toggle()
+                            }
+                        }
                         
-                        // add to core data
-                        let city = City(context: PersistenceController.shared.container.viewContext)
-                        city.lat = cityViewModel.searchCity.cityData.lat
-                        city.lon = cityViewModel.searchCity.cityData.lon
-                        PersistenceController.shared.saveContext()
+                        if canAdd {
+                            // add cities view model
+                            withAnimation {
+                                cityViewModel.savedCities.append(cityViewModel.searchCity)
+                            }
+                            
+                            // add to core data
+                            let city = City(context: PersistenceController.shared.container.viewContext)
+                            city.lat = cityViewModel.searchCity.cityData.lat
+                            city.lon = cityViewModel.searchCity.cityData.lon
+                            city.type = "saved"
+                            PersistenceController.shared.saveContext()
+                        }
                     }
                     
                     // hide search view

@@ -1,6 +1,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct CityView: View {
     let temp: Int
@@ -13,7 +14,12 @@ struct CityView: View {
     
     @Binding public var showButtons: Bool
     @EnvironmentObject var tabSelection: TabSelection
+    @EnvironmentObject var cityViewModel: CityViewModel
+    @EnvironmentObject var locationManager: LocationManager
     @State private var animate = false
+    
+    @FetchRequest(sortDescriptors: [])
+    var cities: FetchedResults<City>
     
     let widgetWidth: CGFloat = UIScreen.main.bounds.width / 2.4
     
@@ -81,7 +87,34 @@ struct CityView: View {
                 .rotationEffect(animate ? Angle(degrees: 20) : .zero)
                 .offset(y: animate ? 1 : 0)
                 .onTapGesture {
-                    // set city button
+                    let savedCity = cityViewModel.savedCities.firstIndex { saved in
+                        saved.cityName.city == city
+                    }
+                    
+                    for coreCity in cities {
+                        if coreCity.type == "main" {
+                            PersistenceController.shared.container.viewContext.delete(coreCity)
+                            PersistenceController.shared.saveContext()
+                        }
+                    }
+                    
+                    for coreCity in cities {
+                        locationManager.getLocationName(location: CLLocation(latitude: coreCity.lat, longitude: coreCity.lon)) { c in
+                            if c.city == city {
+                                let newMainCity = City(context: PersistenceController.shared.container.viewContext)
+                                newMainCity.lat = coreCity.lat
+                                newMainCity.lon = coreCity.lon
+                                newMainCity.type = "main"
+                                PersistenceController.shared.saveContext()
+                            }
+                        }
+                    }
+                    
+                    showButtons = false
+                    
+                    withAnimation {
+                        cityViewModel.mainCity = cityViewModel.savedCities[savedCity!]
+                    }
                 }
                 
                 ZStack {
@@ -92,7 +125,27 @@ struct CityView: View {
                 .rotationEffect(animate ? Angle(degrees: 20) : .zero)
                 .offset(y: animate ? 1 : 0)
                 .onTapGesture {
-                    // delete city button
+                    // find core data city
+                    for coreCity in cities {
+                        if coreCity.type == "saved" {
+                            locationManager.getLocationName(location: CLLocation(latitude: coreCity.lat, longitude: coreCity.lon)) { c in
+                                if c.city == city {
+                                    PersistenceController.shared.container.viewContext.delete(coreCity)
+                                    PersistenceController.shared.saveContext()
+                                    
+                                    let savedCiy = cityViewModel.savedCities.firstIndex { saved in
+                                        c.city == saved.cityName.city
+                                    }
+                                    
+                                    showButtons = false
+                                    
+                                    withAnimation {
+                                        cityViewModel.savedCities.remove(at: savedCiy!)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             .font(.system(size: 30))
