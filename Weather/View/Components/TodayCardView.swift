@@ -6,6 +6,7 @@ struct TodayCardView: View {
     let time: String
     let image: String
     let temp: String
+    let pop: Int?
     
     var body: some View {
         VStack {
@@ -19,6 +20,13 @@ struct TodayCardView: View {
                 .scaledToFit()
                 .frame(width: 50)
             
+            if pop != nil {
+                Text("\(pop!)%")
+                    .font(.system(size: 15))
+                    .foregroundColor(.accentColor)
+                    .padding(0)
+            }
+            
             Spacer()
             
             Text(temp)
@@ -30,6 +38,6 @@ struct TodayCardView: View {
 
 struct TodayCardView_Previews: PreviewProvider {
     static var previews: some View {
-        TodayCardView(time: "10 AM", image: "clear_sky", temp: "19º")
+        TodayCardView(time: "10 AM", image: "clear_sky", temp: "19º", pop: 20)
     }
 }

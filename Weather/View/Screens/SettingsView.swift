@@ -51,7 +51,7 @@ struct SettingsView: View {
                             .padding(.bottom, 2)
                             .padding(.top, 10)
                             
-                            Text("San Fransisco, California, USA")
+                            Text("\(cityViewModel.currentLocationCity.cityName.city), \(cityViewModel.currentLocationCity.cityName.state), \(cityViewModel.currentLocationCity.cityName.country)")
                                 .font(.system(size: 21))
                                 .offset(y: headerOffset)
                         }
@@ -95,7 +95,7 @@ struct SettingsView: View {
                         VStack (alignment: .leading, spacing: 15) {
                             // top info
                             HStack (spacing: 10) {
-                                SmallDataView(image: "sunrise.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationCity.cityData.current.sunrise)), font: .system(size: 15))
+                                SmallDataView(image: "sunrise.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationCity.cityData.current.sunrise, format: "h:mm a")), font: .system(size: 15))
                                     .frame(width: 100)
                                                                 
                                 SmallDataView(image: "drop", data: Text("\(Int(cityViewModel.currentLocationCity.cityData.daily[0].pop * 100))%"), font: .system(size: 15))
@@ -106,7 +106,7 @@ struct SettingsView: View {
                             
                             // bot info
                             HStack (spacing: 10) {
-                                SmallDataView(image: "sunset.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationCity.cityData.current.sunset)), font: .system(size: 15))
+                                SmallDataView(image: "sunset.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationCity.cityData.current.sunset, format: "h:mm a")), font: .system(size: 15))
                                     .frame(width: 100)
                                                                 
                                 SmallDataView(image: "drop.triangle", data: Text("\(Int(cityViewModel.currentLocationCity.cityData.current.humidity))%"), font: .system(size: 15))

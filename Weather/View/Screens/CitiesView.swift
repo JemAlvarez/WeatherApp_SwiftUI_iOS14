@@ -34,7 +34,7 @@ struct CitiesView: View {
                     // cities tiles
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(cityViewModel.savedCities) { city in
-                            CityView(temp: Int(city.cityData.current.temp), city: city.cityName.city, country: city.cityName.country, image: cityViewModel.getWeatherImage(id: city.cityData.current.weather[0].id), rain: Int(city.cityData.daily[0].pop * 100), wind: city.cityData.current.wind_speed, showButtons: $editing)
+                            CityView(temp: Int(city.cityData.current.temp), city: city.cityName.city, state: city.cityName.state, country: city.cityName.country, image: cityViewModel.getWeatherImage(id: city.cityData.current.weather[0].id), rain: Int(city.cityData.daily[0].pop * 100), wind: city.cityData.current.wind_speed, showButtons: $editing)
                         }
                     }
                 }

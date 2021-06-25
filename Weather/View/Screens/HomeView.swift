@@ -19,8 +19,14 @@ struct HomeView: View {
                     HStack {
                         // temp info
                         VStack (alignment: .leading) {
-                            Text(cityViewModel.mainCity.cityName.city)
-                                .font(.system(size: 22))
+                            HStack {
+                                Text(cityViewModel.mainCity.cityName.city)
+                                    .font(.system(size: 22))
+                                
+                                if cityViewModel.mainCity.cityName.city == cityViewModel.currentLocationCity.cityName.city {
+                                    Image(systemName: "location.fill")
+                                }
+                            }
                             
                             Text("\(Int(cityViewModel.mainCity.cityData.current.temp))º")
                                 .font(.system(size: 70).bold())
@@ -41,34 +47,31 @@ struct HomeView: View {
                             .resizable()
                             .scaledToFit()
                             .offset(x: imageOffset)
+                            .frame(height: 170)
                     }
                     
                     // data info
-                    VStack (spacing: 15) {
+                    VStack (alignment: .leading, spacing: 15) {
                         // top info
-                        HStack {
-                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .system(size: 16))
-                            
-                            Spacer()
-                            
-                            SmallDataView(image: "drop", data: Text("7%"), font: .system(size: 16))
-                            
-                            Spacer()
-                            
-                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .system(size: 16))
+                        HStack (spacing: 10) {
+                            SmallDataView(image: "sunrise.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationCity.cityData.current.sunrise, format: "h:mm a")), font: .system(size: 15))
+                                .frame(width: 100)
+                                                            
+                            SmallDataView(image: "drop", data: Text("\(Int(cityViewModel.currentLocationCity.cityData.daily[0].pop * 100))%"), font: .system(size: 15))
+                                .frame(width: 80)
+                                                            
+                            SmallDataView(image: "wind", data: Text("\(cityViewModel.currentLocationCity.cityData.current.wind_speed, specifier: "%.1f") \(cityViewModel.unit == "imperial" ? "mph" : "m/s")"), font: .system(size: 15))
                         }
                         
                         // bot info
-                        HStack {
-                            SmallDataView(image: "wind", data: Text("\(4.4, specifier: "%.1f") mph"), font: .system(size: 16))
-                            
-                            Spacer()
-                            
-                            SmallDataView(image: "drop", data: Text("7%"), font: .system(size: 16))
-                            
-                            Spacer()
-                            
-                            SmallDataView(image: "exclamationmark.3", data: Text("\(0.533, specifier: "%.3f") mBar"), font: .system(size: 16))
+                        HStack (spacing: 10) {
+                            SmallDataView(image: "sunset.fill", data: Text(cityViewModel.getTime(stamp: cityViewModel.currentLocationCity.cityData.current.sunset, format: "h:mm a")), font: .system(size: 15))
+                                .frame(width: 100)
+                                                            
+                            SmallDataView(image: "drop.triangle", data: Text("\(Int(cityViewModel.currentLocationCity.cityData.current.humidity))%"), font: .system(size: 15))
+                                .frame(width: 80)
+                                                            
+                            SmallDataView(image: "speedometer", data: Text("\(Int(cityViewModel.currentLocationCity.cityData.current.pressure)) hpa"), font: .system(size: 15))
                         }
                     }
                     .padding()
@@ -80,25 +83,34 @@ struct HomeView: View {
                     // today forecast
                     VStack (alignment: .leading) {
                         // title
-                        Text("Today")
+                        HStack {
+                            Image(systemName: "clock")
+                            Text("Today")
+                        }
                             .opacity(0.5)
                         
                         // scroll horizontal
                         ScrollView (.horizontal, showsIndicators: false) {
-                            HStack (spacing: 40) {
+                            HStack (spacing: 20) {
                                 // loop
-                                ForEach(0..<10) {i in
+                                ForEach(0..<cityViewModel.mainCity.cityData.hourly.count / 2, id: \.self) {i in
                                     // card
-                                    TodayCardView(time: "10 AM", image: "clear_sky", temp: "19º")
+                                    TodayCardView(time: i == 0 ? "Now" : cityViewModel.getTime(stamp: cityViewModel.mainCity.cityData.hourly[i].dt, format: "h a"), image: cityViewModel.getWeatherImage(id: cityViewModel.mainCity.cityData.hourly[i].weather[0].id), temp: "\(Int(cityViewModel.mainCity.cityData.hourly[i].temp))º", pop: cityViewModel.mainCity.cityData.hourly[i].weather[0].main == "Rain" || cityViewModel.mainCity.cityData.hourly[i].weather[0].main == "Drizzle" || cityViewModel.mainCity.cityData.hourly[i].weather[0].main == "Thunderstorm" ? Int(cityViewModel.mainCity.cityData.hourly[i].pop * 100) : nil)
                                 }
                             }
                         }
                     }
                     
                     // daily forecast
-                    VStack {
+                    VStack (alignment: .leading) {
+                        HStack {
+                            Image(systemName: "calendar")
+                            Text("8-Day Forecast")
+                        }
+                        .opacity(0.5)
+                        
                         ForEach(0..<cityViewModel.mainCity.cityData.daily.count, id: \.self) { i in
-                            DailyRowView(day: "Wednesday", image: cityViewModel.getWeatherImage(id: cityViewModel.mainCity.cityData.daily[i].weather[0].id), tempLow: "\(Int(cityViewModel.mainCity.cityData.daily[i].temp.min))", tempHigh: "\(Int(cityViewModel.mainCity.cityData.daily[i].temp.max))")
+                            DailyRowView(day: i == 0 ? "Today" : cityViewModel.getTime(stamp: cityViewModel.mainCity.cityData.daily[i].dt, format: "EEEE"), image: cityViewModel.getWeatherImage(id: cityViewModel.mainCity.cityData.daily[i].weather[0].id), tempLow: "\(Int(cityViewModel.mainCity.cityData.daily[i].temp.min))", tempHigh: "\(Int(cityViewModel.mainCity.cityData.daily[i].temp.max))", pop: cityViewModel.mainCity.cityData.daily[i].weather[0].main == "Rain" || cityViewModel.mainCity.cityData.daily[i].weather[0].main == "Drizzle" || cityViewModel.mainCity.cityData.daily[i].weather[0].main == "Thunderstorm" ? Int(cityViewModel.mainCity.cityData.daily[i].pop * 100) : nil)
                         }
                     }
                 }

@@ -57,10 +57,10 @@ class CityViewModel: ObservableObject {
         return image
     }
     
-    func getTime(stamp: Int) -> String {
+    func getTime(stamp: Int, format: String) -> String {
         let date = Date(timeIntervalSince1970: TimeInterval(stamp))
         let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
+        formatter.dateFormat = format
         
         return formatter.string(from: date)
     }

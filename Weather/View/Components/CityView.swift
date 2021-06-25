@@ -5,6 +5,7 @@ import SwiftUI
 struct CityView: View {
     let temp: Int
     let city: String
+    let state: String
     let country: String
     let image: String
     let rain: Int
@@ -32,7 +33,8 @@ struct CityView: View {
                             .padding(.top, 7)
                             .font(.system(size: 17))
                             .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                        Text(country.uppercased())
+                            .lineLimit(2)
+                        Text("\(state), \(country.uppercased())")
                             .padding(.top, 4)
                             .font(.system(size: 13))
                             .opacity(0.5)
@@ -109,7 +111,7 @@ struct CityView: View {
 
 struct CityView_Previews: PreviewProvider {
     static var previews: some View {
-        CityView(temp: 22, city: "Austin", country: "usa", image: "clear_sky", rain: 27, wind: 4.4, showButtons: .constant(true))
+        CityView(temp: 22, city: "Austin", state: "TX", country: "usa", image: "clear_sky", rain: 27, wind: 4.4, showButtons: .constant(true))
             .environmentObject(TabSelection())
     }
 }
