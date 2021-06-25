@@ -11,6 +11,8 @@ struct MainView: View {
     
     @FetchRequest(sortDescriptors: [])
     var appData: FetchedResults<AppData>
+    @FetchRequest(sortDescriptors: [])
+    var cities: FetchedResults<City>
     
     var body: some View {
         // tab view
@@ -44,12 +46,18 @@ struct MainView: View {
         .environmentObject(locationManager)
         .environmentObject(cityViewModel)
         .onAppear {
-            print("____DATA___", appData)
             if appData.isEmpty {
                 cityViewModel.initialDataLoad()
             }
             
             cityViewModel.unit = appData[0].unit ?? "imperial"
+            
+            if !cities.isEmpty {
+                cityViewModel.savedCities = []
+                for city in cities {
+                    cityViewModel.cityRequest(location: CLLocation(latitude: city.lat, longitude: city.lon), save: "saved")
+                }
+            }
             
             // get main city data
             cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 0, longitude: 0), save: "main")

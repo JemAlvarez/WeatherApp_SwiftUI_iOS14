@@ -19,7 +19,7 @@ struct HomeView: View {
                     HStack {
                         // temp info
                         VStack (alignment: .leading) {
-                            Text(cityViewModel.mainCity.cityName.components(separatedBy: ",")[0])
+                            Text(cityViewModel.mainCity.cityName.city)
                                 .font(.system(size: 22))
                             
                             Text("\(Int(cityViewModel.mainCity.cityData.current.temp))º")

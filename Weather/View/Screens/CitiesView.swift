@@ -10,6 +10,12 @@ struct CitiesView: View {
     @State var search = ""
     @State var searching = false
     @EnvironmentObject var tabSelection: TabSelection
+    @EnvironmentObject var cityViewModel: CityViewModel
+    
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
         // nav
@@ -26,17 +32,10 @@ struct CitiesView: View {
                         .offset(y: headerOffset)
                     
                     // cities tiles
-                    HStack (spacing: 20) {
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "clear_sky", rain: 27, wind: 4.4, showButtons: $editing)
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "thunderstorm", rain: 27, wind: 4.4, showButtons: $editing)
-                    }
-                    HStack (spacing: 20) {
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "few_clouds", rain: 27, wind: 4.4, showButtons: $editing)
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "mist", rain: 27, wind: 4.4, showButtons: $editing)
-                    }
-                    HStack (spacing: 20) {
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "snow", rain: 27, wind: 4.4, showButtons: $editing)
-                        CityView(temp: 22, city: "Austin", country: "usa", image: "rain", rain: 27, wind: 4.4, showButtons: $editing)
+                    LazyVGrid(columns: columns, spacing: 20) {
+                        ForEach(cityViewModel.savedCities) { city in
+                            CityView(temp: Int(city.cityData.current.temp), city: city.cityName.city, country: city.cityName.country, image: cityViewModel.getWeatherImage(id: city.cityData.current.weather[0].id), rain: Int(city.cityData.daily[0].pop * 100), wind: city.cityData.current.wind_speed, showButtons: $editing)
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -48,7 +47,7 @@ struct CitiesView: View {
                 Color("AccentColor").edgesIgnoringSafeArea(.all)
                     .opacity(0.3)
                 
-                SearchView(city: search, showingSearchList: $showingSearchList)
+                SearchView(showingSearchList: $showingSearchList)
                     .onAppear {
                         search = ""
                         searching = false

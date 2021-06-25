@@ -37,7 +37,7 @@ struct MapView: View {
                     HStack (alignment: .top) {
                         // left title
                         CustomMapUIView {
-                            Text(cityViewModel.mapCity.cityName)
+                            Text("\(cityViewModel.mapCity.cityName.city), \(cityViewModel.mapCity.cityName.state)")
                                 .lineLimit(1)
                                 .font(.system(size: 20))
                                 .padding(.horizontal)
@@ -186,11 +186,11 @@ struct MapView: View {
             }
         }
         .onReceive(timer, perform: { _ in
-            locationManager.getLocationName(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) { str in
-                if cityViewModel.mapCity.cityName != str {
+            locationManager.getLocationName(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) { city in
+                if cityViewModel.mapCity.cityName.city != city.city {
                     print("ran")
                     cityViewModel.cityRequest(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude), save: "map")
-                    cityViewModel.mapCity.cityName = str
+                    cityViewModel.mapCity.cityName = city
                     
                 }
             }

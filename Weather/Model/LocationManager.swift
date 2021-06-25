@@ -21,7 +21,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         }
     }
     
-    func getLocationName(location: CLLocation, completion: @escaping (String) -> ()) {
+    func getLocationName(location: CLLocation, completion: @escaping (CityName) -> ()) {
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { placemarks, _  in
             guard let place = placemarks?.first else {
@@ -29,16 +29,35 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             }
             
             var cityName = ""
+            var stateName = ""
+            var countryName = ""
             
             if let city = place.locality {
-                cityName += city
+                cityName = city
             }
             
             if let state = place.administrativeArea {
-                cityName += ", \(state)"
+                stateName = state
             }
             
-            completion(cityName)
+            if let country = place.isoCountryCode {
+                countryName = country
+            }
+            
+            completion(CityName(city: cityName, state: stateName, country: countryName))
+        }
+    }
+    
+    func getLocation(_ name: String, completion: @escaping (CLLocation) -> ()) {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(name) { placemark, _ in
+            guard let place = placemark?.first else {
+                return
+            }
+            
+            if let city = place.location {
+                completion(city)
+            }
         }
     }
 }

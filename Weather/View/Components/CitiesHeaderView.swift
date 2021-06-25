@@ -10,6 +10,9 @@ struct CitiesHeaderView: View {
     
     @State var searchFieldWidth: CGFloat = .infinity
     
+    @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var cityViewModel: CityViewModel
+    
     var body: some View {
         ZStack {
             HStack {
@@ -24,6 +27,10 @@ struct CitiesHeaderView: View {
                 HStack {
                     TextField("Search", text: $search, onCommit:  {
                         if !search.isEmpty {
+                            locationManager.getLocation(search) { location in
+                                cityViewModel.cityRequest(location: location, save: "search")
+                            }
+                            
                             withAnimation {
                                 showingSearchList = true
                             }

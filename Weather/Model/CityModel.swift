@@ -4,8 +4,14 @@ import Foundation
 
 struct CityModel: Identifiable {
     let id = UUID()
-    var cityName: String
+    var cityName: CityName
     let cityData: CityData
+}
+
+struct CityName {
+    let city: String
+    let state: String
+    let country: String
 }
 
 struct CityData: Codable {

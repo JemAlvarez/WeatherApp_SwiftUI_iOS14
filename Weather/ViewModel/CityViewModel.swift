@@ -5,9 +5,10 @@ import CoreLocation
 import CoreData
 
 class CityViewModel: ObservableObject {
-    @Published var mainCity = CityModel(cityName: "", cityData: miscData.tempCityModel)
-    @Published var currentLocationCity = CityModel(cityName: "", cityData: miscData.tempCityModel)
-    @Published var mapCity = CityModel(cityName: "", cityData: miscData.tempCityModel)
+    @Published var mainCity = miscData.tempCityModel
+    @Published var currentLocationCity = miscData.tempCityModel
+    @Published var mapCity = miscData.tempCityModel
+    @Published var searchCity = miscData.tempCityModel
     @Published var savedCities: [CityModel] = []
     @Published var unit = "imperial"
     
@@ -19,6 +20,10 @@ class CityViewModel: ObservableObject {
                 self.currentLocationCity = city
             } else if save == "map" {
                 self.mapCity = city
+            } else if save == "search" {
+                self.searchCity = city
+            } else if save == "saved" {
+                self.savedCities.append(city)
             }
         }
     }

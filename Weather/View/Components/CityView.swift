@@ -3,14 +3,14 @@
 import SwiftUI
 
 struct CityView: View {
-    @State public var temp: Int
-    @State public var city: String
-    @State public var country: String
-    @State public var image: String
-    @State public var rain: Int
-    @State public var wind: Double
-    @Binding public var showButtons: Bool
+    let temp: Int
+    let city: String
+    let country: String
+    let image: String
+    let rain: Int
+    let wind: Double
     
+    @Binding public var showButtons: Bool
     @EnvironmentObject var tabSelection: TabSelection
     @State private var animate = false
     
