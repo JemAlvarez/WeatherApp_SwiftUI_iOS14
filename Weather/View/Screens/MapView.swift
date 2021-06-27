@@ -189,7 +189,7 @@ struct MapView: View {
             locationManager.getLocationName(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) { city in
                 if cityViewModel.mapCity.cityName.city != city.city {
                     print("ran")
-                    cityViewModel.cityRequest(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude), save: "map")
+                    cityViewModel.cityRequest(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude), save: "map", unit: cityViewModel.unit)
                     cityViewModel.mapCity.cityName = city
                     
                 }

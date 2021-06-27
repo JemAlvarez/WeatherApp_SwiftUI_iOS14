@@ -28,7 +28,7 @@ struct CitiesHeaderView: View {
                     TextField("Search", text: $search, onCommit:  {
                         if !search.isEmpty {
                             locationManager.getLocation(search) { location in
-                                cityViewModel.cityRequest(location: location, save: "search")
+                                cityViewModel.cityRequest(location: location, save: "search", unit: nil)
                             }
                             
                             withAnimation {

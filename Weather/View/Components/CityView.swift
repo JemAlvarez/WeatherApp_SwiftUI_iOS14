@@ -39,7 +39,6 @@ struct CityView: View {
                             .padding(.top, 7)
                             .font(.system(size: 17))
                             .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                            .lineLimit(2)
                         Text("\(state), \(country.uppercased())")
                             .padding(.top, 4)
                             .font(.system(size: 13))

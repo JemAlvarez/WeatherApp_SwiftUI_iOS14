@@ -57,12 +57,12 @@ struct MainView: View {
                 cityViewModel.savedCities = []
                 for city in cities {
                     if city.type == "saved" {
-                        cityViewModel.cityRequest(location: CLLocation(latitude: city.lat, longitude: city.lon), save: "saved")
+                        cityViewModel.cityRequest(location: CLLocation(latitude: city.lat, longitude: city.lon), save: "saved", unit: cityViewModel.unit)
                     }
                     
                     if city.type == "main" {
                         addMain = false
-                        cityViewModel.cityRequest(location: CLLocation(latitude: city.lat, longitude: city.lon), save: "main")
+                        cityViewModel.cityRequest(location: CLLocation(latitude: city.lat, longitude: city.lon), save: "main", unit: cityViewModel.unit)
                     }
                 }
                 if addMain {
@@ -74,7 +74,7 @@ struct MainView: View {
                 }
             } else {
                 // get main city data
-                cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "main")
+                cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "main", unit: cityViewModel.unit)
                 let addMainCity = City(context: PersistenceController.shared.container.viewContext)
                 addMainCity.lat = locationManager.manager.location?.coordinate.latitude ?? 51.507222
                 addMainCity.lon = locationManager.manager.location?.coordinate.longitude ?? -0.1275
@@ -84,7 +84,7 @@ struct MainView: View {
             
             // get current city data
             if locationManager.locationStatus == .authorizedWhenInUse {
-                cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current")
+                cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current", unit: cityViewModel.unit)
             }
         }
     }

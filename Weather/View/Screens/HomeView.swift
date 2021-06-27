@@ -12,7 +12,7 @@ struct HomeView: View {
         // view
         CustomScreenView(customScreen: {
             // scroll view
-            if cityViewModel.loading {
+            if cityViewModel.loadingMain {
                 ProgressView()
             } else {
                 ScrollView (showsIndicators: false) {

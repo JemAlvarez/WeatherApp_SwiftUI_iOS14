@@ -133,7 +133,6 @@ struct SettingsView: View {
                                 appData[0].unit = "metric"
                                 PersistenceController.shared.saveContext()
                                 cityViewModel.unit = "metric"
-                                changeOnUnit()
                             }) {
                                 Text("Metric")
                             }
@@ -142,7 +141,6 @@ struct SettingsView: View {
                                 appData[0].unit = "imperial"
                                 PersistenceController.shared.saveContext()
                                 cityViewModel.unit = "imperial"
-                                changeOnUnit()
                             }) {
                                 Text("Imperial")
                             }
@@ -252,7 +250,7 @@ struct SettingsView: View {
         .onChange(of: locationManager.locationStatus) { newValue in
             if newValue == .authorizedWhenInUse {
                 locationStatus = "Allowed"
-                cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current")
+                cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current", unit: cityViewModel.unit)
             } else {
                 locationStatus = "Not Allowed"
             }
@@ -262,7 +260,7 @@ struct SettingsView: View {
             
             locationManager.getLocationName(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275)) { c in
                 if cityViewModel.currentLocationCity.cityName.city != c.city {
-                    cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current")
+                    cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current", unit: cityViewModel.unit)
                 }
             }
             
@@ -271,25 +269,6 @@ struct SettingsView: View {
                     headerOffset = 0
                     imageZoom = 1
                 }
-            }
-        }
-    }
-    
-    func changeOnUnit() {
-        // main
-        cityViewModel.cityRequest(location: CLLocation(latitude: cityViewModel.mainCity.cityData.lat, longitude: cityViewModel.mainCity.cityData.lon), save: "main")
-        
-        // current
-        if locationManager.locationStatus == .authorizedWhenInUse {
-            cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current")
-            
-        }
-        
-        // saved
-        cityViewModel.savedCities = []
-        for city in cities {
-            if city.type == "saved" {
-                cityViewModel.cityRequest(location: CLLocation(latitude: city.lat, longitude: city.lon), save: "saved")
             }
         }
     }

@@ -21,6 +21,7 @@ struct SearchView: View {
                         withAnimation {
                             showingSearchList = false
                             cityViewModel.searchCity = miscData.tempCityModel
+                            cityViewModel.loadingSearch = true
                         }
                     }) {
                         Text("Cancel")
@@ -45,6 +46,7 @@ struct SearchView: View {
                                             
                                             // hide search view
                                             showingSearchList = false
+                                            cityViewModel.loadingSearch = true
                                         }
                                     }
                                 }
@@ -63,8 +65,11 @@ struct SearchView: View {
                                 city.type = "saved"
                                 PersistenceController.shared.saveContext()
                                 
-                                // hide search view
-                                showingSearchList = false
+                                withAnimation {
+                                    // hide search view
+                                    showingSearchList = false
+                                    cityViewModel.loadingSearch = true
+                                }
                             }
                         } else {
                             withAnimation {
@@ -78,7 +83,7 @@ struct SearchView: View {
                                     
                                     // hide search view
                                     showingSearchList = false
-                                }
+                                    cityViewModel.loadingSearch = true                                    }
                             }
                         }
                     }) {
@@ -88,52 +93,60 @@ struct SearchView: View {
                 }
                 .foregroundColor(.white)
                 
-                VStack {
-                    // TOP
-                    HStack (alignment: .top) {
-                        // LEFT
-                        VStack (alignment: .leading, spacing: 0) {
-                            HStack {
+                if cityViewModel.loadingSearch {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                } else {
+                    VStack {
+                        // TOP
+                        HStack (alignment: .top) {
+                            // LEFT
+                            VStack (alignment: .leading, spacing: 0) {
                                 Text("\(Int(cityViewModel.searchCity.cityData.current.temp))º")
                                      .font(.system(size: 35))
+                                Text(cityViewModel.searchCity.cityName.city)
+                                    .padding(.top, 7)
+                                    .font(.system(size: 17))
+                                    .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                                HStack {
+                                    Text(cityViewModel.searchCity.cityName.state)
+                                    Text(cityViewModel.searchCity.cityName.country)
+                                }
+                                    .padding(.top, 4)
+                                    .font(.system(size: 13))
+                                    .opacity(0.5)
                             }
-                            Text(cityViewModel.searchCity.cityName.city)
-                                .padding(.top, 7)
-                                .font(.system(size: 17))
-                                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                            Text(cityViewModel.searchCity.cityName.country)
-                                .padding(.top, 4)
-                                .font(.system(size: 13))
-                                .opacity(0.5)
+                            
+                            Spacer()
+                            
+                            // RIGHT
+                            Image(cityViewModel.getWeatherImage(id: cityViewModel.searchCity.cityData.current.weather[0].id))
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: (UIScreen.main.bounds.width / 2.45) / 3.3)
+                            
                         }
+                        .padding(.top, 20)
+                        .padding(.horizontal, 20)
                         
                         Spacer()
                         
-                        // RIGHT
-                        Image(cityViewModel.getWeatherImage(id: cityViewModel.searchCity.cityData.current.weather[0].id))
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: (UIScreen.main.bounds.width / 2.45) / 3.3)
-                        
+                        // BOTTOM
+                        HStack {
+                            SmallDataView(image: "drop", data: Text("\(Int(cityViewModel.searchCity.cityData.daily[0].pop * 100))%"), font: .system(size: 11))
+                            Spacer()
+                            SmallDataView(image: "wind", data: Text("\(cityViewModel.searchCity.cityData.current.wind_speed, specifier: "%.1f") \(cityViewModel.unit == "imperial" ? "mph" : "m/s")"), font: .system(size: 11))
+                            
+                        }
+                        .padding(.bottom, 20)
+                        .padding(.horizontal, 20)
                     }
-                    .padding(.top, 20)
-                    .padding(.horizontal, 20)
+                    .background(Color("backgroundLight"))
+                    .cornerRadius(15)
+                    .foregroundColor(.white)
                     
-                    Spacer()
-                    
-                    // BOTTOM
-                    HStack {
-                        SmallDataView(image: "drop", data: Text("\(Int(cityViewModel.searchCity.cityData.daily[0].pop * 100))%"), font: .system(size: 11))
-                        Spacer()
-                        SmallDataView(image: "wind", data: Text("\(cityViewModel.searchCity.cityData.current.wind_speed, specifier: "%.1f") \(cityViewModel.unit == "imperial" ? "mph" : "m/s")"), font: .system(size: 11))
-                        
-                    }
-                    .padding(.bottom, 20)
-                    .padding(.horizontal, 20)
                 }
-                .background(Color("backgroundLight"))
-                .cornerRadius(15)
-                .foregroundColor(.white)
             }
             .frame(height: UIScreen.main.bounds.height / 4)
             .padding()

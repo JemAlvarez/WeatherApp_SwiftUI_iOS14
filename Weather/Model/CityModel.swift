@@ -5,7 +5,7 @@ import Foundation
 struct CityModel: Identifiable {
     let id = UUID()
     var cityName: CityName
-    let cityData: CityData
+    var cityData: CityData
 }
 
 struct CityName {
@@ -17,39 +17,39 @@ struct CityName {
 struct CityData: Codable {
     let lat: Double
     let lon: Double
-    let current: Current
-    let hourly: [Hourly]
-    let daily: [Daily]
+    var current: Current
+    var hourly: [Hourly]
+    var daily: [Daily]
 }
 
 struct Current: Codable {
     let sunrise: Int
     let sunset: Int
-    let temp: Double
+    var temp: Double
     let pressure: Double
     let humidity: Double
     let uvi: Double
-    let wind_speed: Double
+    var wind_speed: Double
     let weather: [Weather]
 }
 
 struct Hourly: Codable {
     let dt: Int
-    let temp: Double
+    var temp: Double
     let weather: [Weather]
     let pop: Double
 }
 
 struct Daily: Codable {
     let dt: Int
-    let temp: Temp
+    var temp: Temp
     let weather: [Weather]
     let pop: Double
 }
 
 struct Temp: Codable {
-    let min: Double
-    let max: Double
+    var min: Double
+    var max: Double
 }
 
 struct Weather: Codable {
