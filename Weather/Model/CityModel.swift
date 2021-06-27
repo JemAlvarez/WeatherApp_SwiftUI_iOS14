@@ -57,3 +57,7 @@ struct Weather: Codable {
     let main: String
     let description: String
 }
+
+struct Minutely: Codable, Hashable {
+    let precipitation: Double
+}
