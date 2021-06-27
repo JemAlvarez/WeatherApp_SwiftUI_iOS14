@@ -82,6 +82,7 @@ struct HomeView: View {
                         .cornerRadius(20)
                         
                         // _____ RAIN GRAPH _____
+                        MinutePrecipitationView()
                         
                         // today forecast
                         VStack (alignment: .leading) {
@@ -120,7 +121,7 @@ struct HomeView: View {
                     .padding(.horizontal, 30)
                     .padding(.top, 30)
                 }
-                .padding(.bottom)
+//                .padding(.bottom)
             }
         }, background: {
             // view background

@@ -90,12 +90,14 @@ struct CityView: View {
                         saved.cityName.city == city
                     }
                     
+                    // delete core data main city
                     for coreCity in cities {
                         if coreCity.type == "main" {
                             PersistenceController.shared.container.viewContext.delete(coreCity)
                             PersistenceController.shared.saveContext()
                         }
                     }
+                    
                     
                     for coreCity in cities {
                         locationManager.getLocationName(location: CLLocation(latitude: coreCity.lat, longitude: coreCity.lon)) { c in

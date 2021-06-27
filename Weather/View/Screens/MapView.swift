@@ -9,8 +9,6 @@ struct MapView: View {
     @EnvironmentObject var locationManager: LocationManager
     
     // states
-    @State var citySet = false
-    @State var cityFav = false
     @State var tracking: MapUserTrackingMode = .follow
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @EnvironmentObject var tabSelection: TabSelection
@@ -42,56 +40,27 @@ struct MapView: View {
                                 .font(.system(size: 20))
                                 .padding(.horizontal)
                         }
-                        .padding([.horizontal,.top], 30)
                         
                         Spacer()
                         
-                        // right stack
-                        VStack (spacing: 5) {
-                            // set current location
-                            CustomMapUIView {
-                                Image(systemName: citySet ? "mappin.circle.fill" : "mappin.circle")
-                                    .frame(width: 20)
-                                    .foregroundColor(citySet ? .green : .white)
-                            }
-                            .padding(.top, 30)
-                            .onTapGesture {
-                                withAnimation {
-                                    citySet.toggle()
-                                }
-                            }
-                            
-                            // set favorite
-                            CustomMapUIView {
-                                Image(systemName: cityFav ? "star.fill" : "star")
-                                    .frame(width: 20)
-                                    .foregroundColor(cityFav ? .yellow : .white)
-                            }
-                            .onTapGesture {
-                                withAnimation {
-                                    cityFav.toggle()
-                                }
-                            }
-                            
-                            // set tracking
-                            CustomMapUIView {
-                                Image(systemName: tracking == .follow ? "location.fill" : "location")
-                                    .frame(width: 20)
-                                    .foregroundColor(tracking == .follow ? .blue : .white)
-                            }
-                            .onTapGesture {
-                                withAnimation {
-                                    if locationManager.locationStatus == .authorizedWhenInUse {
-                                        if tracking == .follow {
-                                            tracking = .none
-                                        } else {
-                                            tracking = .follow
-                                        }
+                        // set tracking
+                        CustomMapUIView {
+                            Image(systemName: tracking == .follow ? "location.fill" : "location")
+                                .frame(width: 20)
+                                .foregroundColor(tracking == .follow ? .blue : .white)
+                        }
+                        .onTapGesture {
+                            withAnimation {
+                                
+                                if locationManager.locationStatus == .authorizedWhenInUse {
+                                    if tracking == .follow {
+                                        tracking = .none
+                                    } else {
+                                        tracking = .follow
                                     }
                                 }
                             }
                         }
-                        .padding(.horizontal)
                     }
                     
                     Spacer()
@@ -147,7 +116,6 @@ struct MapView: View {
                                 }
                             }
                         }
-                        .padding([.horizontal, .bottom], 30)
                         
                         Spacer()
                         
@@ -161,9 +129,9 @@ struct MapView: View {
                                 Text("\(Int(cityViewModel.mapCity.cityData.current.temp))º")
                             }
                         }
-                        .padding(30)
                     }
                 }
+                .padding(30)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }) {
@@ -173,10 +141,12 @@ struct MapView: View {
         // appear
         .onAppear {
             region.center = locationManager.manager.location?.coordinate ?? CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275)
-            
+
             if tabSelection.tab == "map" {
                 region.span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
             }
+            
+            
         }
         // tab change
         .onChange(of: tabSelection.tab) { newValue in
@@ -188,7 +158,6 @@ struct MapView: View {
         .onReceive(timer, perform: { _ in
             locationManager.getLocationName(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)) { city in
                 if cityViewModel.mapCity.cityName.city != city.city {
-                    print("ran")
                     cityViewModel.cityRequest(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude), save: "map", unit: cityViewModel.unit)
                     cityViewModel.mapCity.cityName = city
                     

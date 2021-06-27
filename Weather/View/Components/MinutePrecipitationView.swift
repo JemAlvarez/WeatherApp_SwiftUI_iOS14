@@ -3,49 +3,63 @@
 import SwiftUI
 
 struct MinutePrecipitationView: View {
+    @EnvironmentObject var tabSelection: TabSelection
+    @State var maxHeight = false
+    
     var body: some View {
-        VStack {
-            GeometryReader {metrics in
-                VStack {
-                    Text("Rain for the next hour.")
-                        .bold()
-                        .frame(maxWidth: .infinity,alignment: .leading)
-                    
-                    HStack (spacing: 3) {
-                        ForEach (0..<tempMinutely.minutely.count, id: \.self) { i in
-                            VStack {
-                                Spacer()
-                                Rectangle()
-                                    .frame(width: metrics.size.width / 120, height: (metrics.size.height * (CGFloat(tempMinutely.minutely[i].precipitation / getMax()))) * 0.6)
-                                    .cornerRadius(5)
-                                    .foregroundColor(Color.accentColor)
-                            }
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    
-                    HStack {
-                        ForEach (0..<6) { i in
-                            if i == 0 {
-                                Text("Now")
-                            } else {
-                                Text("\(i * 10)m")
-                            }
+        GeometryReader { metrics in
+            VStack {
+                Text("Rain for the next hour.")
+                    .bold()
+                    .frame(maxWidth: .infinity,alignment: .leading)
+                
+                HStack (spacing: 3) {
+                    ForEach (0..<tempMinutely.minutely.count, id: \.self) { i in
+                        VStack {
                             Spacer()
+                            Rectangle()
+                                .frame(height: maxHeight ? (metrics.size.height * (CGFloat(tempMinutely.minutely[i].precipitation / getMax()))) * 0.5 : 0)
+                                .cornerRadius(5)
+                                .foregroundColor(Color.accentColor)
                         }
                     }
-                    .opacity(0.4)
+                }
+                .frame(maxWidth: .infinity)
+                
+                HStack {
+                    ForEach (0..<6) { i in
+                        if i == 0 {
+                            Text("Now")
+                        } else {
+                            Text("\(i * 10)m")
+                        }
+                        Spacer()
+                    }
+                }
+                .opacity(0.4)
+            }
+        }
+        .frame(height: 150)
+        .padding()
+        .background(Color("backgroundLight"))
+        .cornerRadius(20)
+        .foregroundColor(Color.white)
+        .onChange(of: tabSelection.tab) { newTab in
+            if newTab == "home" {
+                withAnimation {
+                    maxHeight = true
+                }
+            } else {
+                maxHeight = false
+            }
+        }
+        .onAppear {
+            if tabSelection.tab == "home" {
+                withAnimation {
+                    maxHeight = true
                 }
             }
-            .frame(height: 150)
-            .padding()
-            .background(Color("backgroundLight"))
-            .cornerRadius(20)
         }
-        .padding()
-        .frame(maxHeight: .infinity)
-        .background(Color("background"))
-        .foregroundColor(Color.white)
     }
     
     func getMax () -> Double {
@@ -64,6 +78,7 @@ struct MinutePrecipitationView: View {
 struct MinutePrecipitationView_Previews: PreviewProvider {
     static var previews: some View {
         MinutePrecipitationView()
+            .environmentObject(TabSelection())
     }
 }
 

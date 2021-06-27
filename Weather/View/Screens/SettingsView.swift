@@ -188,7 +188,7 @@ struct SettingsView: View {
                         }) {
                             VStack (spacing: 5) {
                                 Image(systemName: "pin.fill")
-                                Text("Set as main")
+                                Text("Main")
                                     .opacity(0.4)
                             }
                         }
@@ -215,7 +215,7 @@ struct SettingsView: View {
                         Text("Source")
                                                     
                         HStack {
-                            Text("weather.gov")
+                            Text("openweathermap.org")
                             Image(systemName: "info.circle")
                         }
                     }
