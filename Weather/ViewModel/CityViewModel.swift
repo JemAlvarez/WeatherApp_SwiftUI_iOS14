@@ -3,6 +3,7 @@
 import Foundation
 import CoreLocation
 import CoreData
+import SwiftUI
 
 class CityViewModel: ObservableObject {
     @Published var mainCity = miscData.tempCityModel
@@ -11,11 +12,16 @@ class CityViewModel: ObservableObject {
     @Published var searchCity = miscData.tempCityModel
     @Published var savedCities: [CityModel] = []
     @Published var unit = "imperial"
+    @Published var loading = true
     
     func cityRequest(location: CLLocation, save: String) {
         ApiModel().getCity(location: location, unit: unit) { city in
             if save == "main" {
                 self.mainCity = city
+                
+                withAnimation {
+                    self.loading = false
+                }
             } else if save == "current" {
                 self.currentLocationCity = city
             } else if save == "map" {

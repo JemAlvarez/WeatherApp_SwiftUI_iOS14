@@ -19,7 +19,7 @@ struct MainView: View {
         TabView (selection: $tabSelection.tab) {
             HomeView()
                 .tabItem {
-                    Image(systemName: "house")
+                    Image(systemName: tabSelection.tab == "home" ? "house.fill" : "house")
                 }
                 .tag("home")
             MapView()
@@ -30,12 +30,12 @@ struct MainView: View {
 //            CitiesView()
             CitiesView()
                 .tabItem {
-                    Image(systemName: "heart")
+                    Image(systemName: tabSelection.tab == "cities" ? "heart.fill" : "heart")
                 }
                 .tag("cities")
             SettingsView()
                 .tabItem {
-                    Image(systemName: "gearshape")
+                    Image(systemName: tabSelection.tab == "settings" ? "gearshape.fill" : "gearshape")
                 }
                 .tag("settings")
         }

@@ -282,6 +282,7 @@ struct SettingsView: View {
         // current
         if locationManager.locationStatus == .authorizedWhenInUse {
             cityViewModel.cityRequest(location: locationManager.manager.location ?? CLLocation(latitude: 51.507222, longitude: -0.1275), save: "current")
+            
         }
         
         // saved
