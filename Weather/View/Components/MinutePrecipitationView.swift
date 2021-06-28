@@ -4,7 +4,9 @@ import SwiftUI
 
 struct MinutePrecipitationView: View {
     @EnvironmentObject var tabSelection: TabSelection
+    @EnvironmentObject var cityViewModel: CityViewModel
     @State var maxHeight = false
+    @State var maxVal: Double = 0
     
     var body: some View {
         GeometryReader { metrics in
@@ -14,14 +16,18 @@ struct MinutePrecipitationView: View {
                     .frame(maxWidth: .infinity,alignment: .leading)
                 
                 HStack (spacing: 3) {
-                    ForEach (0..<tempMinutely.minutely.count, id: \.self) { i in
-                        VStack {
-                            Spacer()
-                            Rectangle()
-                                .frame(height: maxHeight ? (metrics.size.height * (CGFloat(tempMinutely.minutely[i].precipitation / getMax()))) * 0.5 : 0)
-                                .cornerRadius(5)
-                                .foregroundColor(Color.accentColor)
+                    if cityViewModel.mainCity.minutely != nil {
+                        ForEach (0..<cityViewModel.mainCity.minutely!.minutely.count, id: \.self) { i in
+                            VStack {
+                                Spacer()
+                                Rectangle()
+                                    .frame(height: maxHeight ? (metrics.size.height * (CGFloat(cityViewModel.mainCity.minutely!.minutely[i].precipitation / maxVal)) * 0.3) : 0)
+                                    .cornerRadius(5)
+                                    .foregroundColor(Color.accentColor)
+                            }
                         }
+                    } else {
+                        EmptyView()
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -39,7 +45,7 @@ struct MinutePrecipitationView: View {
                 .opacity(0.4)
             }
         }
-        .frame(height: 150)
+        .frame(minHeight: 100)
         .padding()
         .background(Color("backgroundLight"))
         .cornerRadius(20)
@@ -59,13 +65,26 @@ struct MinutePrecipitationView: View {
                     maxHeight = true
                 }
             }
+            
+            if cityViewModel.mainCity.minutely != nil {
+                maxVal = getMax(cityViewModel.mainCity.minutely!.minutely)
+            }
+        
+            print("MAX", maxVal)
+        
+            if cityViewModel.mainCity.minutely != nil {
+                for c in cityViewModel.mainCity.minutely!.minutely {
+                    print("precipitation", c.precipitation)
+                    print("____", c.precipitation / maxVal)
+                }
+            }
         }
     }
     
-    func getMax () -> Double {
+    func getMax (_ minutely: [Minutely]) -> Double {
         var max: Double = 0
         
-        for min in tempMinutely.minutely {
+        for min in minutely {
             if min.precipitation > max {
                 max = min.precipitation
             }
@@ -80,69 +99,4 @@ struct MinutePrecipitationView_Previews: PreviewProvider {
         MinutePrecipitationView()
             .environmentObject(TabSelection())
     }
-}
-
-struct tempMinutely {
-    static let minutely = [
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 3),
-        Minutely(precipitation: 4),
-        Minutely(precipitation: 4),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 7),
-        Minutely(precipitation: 8),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 4),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 7),
-        Minutely(precipitation: 8),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 3),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 3),
-        Minutely(precipitation: 4),
-        Minutely(precipitation: 4),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 7),
-        Minutely(precipitation: 8),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 3),
-        Minutely(precipitation: 4),
-        Minutely(precipitation: 4),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 7),
-        Minutely(precipitation: 8),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 4),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 6),
-        Minutely(precipitation: 2),
-        Minutely(precipitation: 7),
-        Minutely(precipitation: 8),
-        Minutely(precipitation: 5),
-        Minutely(precipitation: 3)
-    ]
 }

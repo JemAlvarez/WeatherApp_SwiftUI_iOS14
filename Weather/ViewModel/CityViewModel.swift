@@ -24,6 +24,14 @@ class CityViewModel: ObservableObject {
             if save == "main" {
                 self.mainCity = city
                 
+                if city.cityData.current.weather[0].main == "Drizzle" || city.cityData.current.weather[0].main == "Rain" {
+                    ApiModel().getMinutely(location: location) { minData in
+                        withAnimation {
+                            self.mainCity.minutely = CityMinutely(minutely: minData)
+                        }
+                    }
+                }
+                
                 withAnimation {
                     self.loadingMain = false
                 }

@@ -170,6 +170,14 @@ struct SettingsView: View {
                                 }
                             }
                             
+                            if cityViewModel.mainCity.cityData.current.weather[0].main == "Drizzle" || cityViewModel.mainCity.cityData.current.weather[0].main == "Rain" {
+                                ApiModel().getMinutely(location: CLLocation(latitude: cityViewModel.mainCity.cityData.lat, longitude: cityViewModel.mainCity.cityData.lat), completion: { minData in
+                                    withAnimation {
+                                        cityViewModel.mainCity.minutely = CityMinutely(minutely: minData)
+                                    }
+                                })
+                            }
+                            
                             let addCity = City(context: PersistenceController.shared.container.viewContext)
                             addCity.lat = locationManager.manager.location?.coordinate.latitude ?? 51.507222
                             addCity.lon = locationManager.manager.location?.coordinate.longitude ?? -0.1275

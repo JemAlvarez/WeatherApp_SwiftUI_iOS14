@@ -116,6 +116,14 @@ struct CityView: View {
                     withAnimation {
                         cityViewModel.mainCity = cityViewModel.savedCities[savedCity!]
                     }
+                    
+                    if cityViewModel.mainCity.cityData.current.weather[0].main == "Drizzle" || cityViewModel.mainCity.cityData.current.weather[0].main == "Rain" {
+                        ApiModel().getMinutely(location: CLLocation(latitude: cityViewModel.mainCity.cityData.lat, longitude: cityViewModel.mainCity.cityData.lat), completion: { minData in
+                            withAnimation {
+                                cityViewModel.mainCity.minutely = CityMinutely(minutely: minData)
+                            }
+                        })
+                    }
                 }
                 
                 ZStack {

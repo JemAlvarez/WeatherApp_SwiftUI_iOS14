@@ -19,4 +19,19 @@ class ApiModel {
         }
         .resume()
     }
+    
+    func getMinutely(location: CLLocation, completion: @escaping ([Minutely]) -> ()) {
+        guard let url = URL(string: "https://api.openweathermap.org/data/\(Constants.weatherApiVersion)/onecall?lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&exclude=current,hourly,daily,alerts&appid=\(Constants.weatherApiKey)&units=imperial") else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            let minutely = try! JSONDecoder().decode(CityMinutely.self, from: data!)
+            
+            print(minutely.minutely)
+            
+            DispatchQueue.main.async {
+                completion(minutely.minutely)
+            }
+        }
+        .resume()
+    }
 }

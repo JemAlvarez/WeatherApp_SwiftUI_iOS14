@@ -6,6 +6,11 @@ struct CityModel: Identifiable {
     let id = UUID()
     var cityName: CityName
     var cityData: CityData
+    var minutely: CityMinutely?
+}
+
+struct CityMinutely: Codable {
+    var minutely: [Minutely]
 }
 
 struct CityName {

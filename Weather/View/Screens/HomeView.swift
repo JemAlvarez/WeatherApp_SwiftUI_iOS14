@@ -34,7 +34,7 @@ struct HomeView: View {
                                 Text("\(Int(cityViewModel.mainCity.cityData.current.temp))º")
                                     .font(.system(size: 70).bold())
                                 
-                                Text("Cloudy")
+                                Text(cityViewModel.mainCity.cityData.current.weather[0].main)
                                     .padding(.horizontal, 15)
                                     .padding(.vertical, 7)
                                     .background(Color("purple").opacity(0.5))
@@ -82,7 +82,9 @@ struct HomeView: View {
                         .cornerRadius(20)
                         
                         // _____ RAIN GRAPH _____
-                        MinutePrecipitationView()
+                        if cityViewModel.mainCity.minutely != nil {
+                            MinutePrecipitationView()
+                        }
                         
                         // today forecast
                         VStack (alignment: .leading) {
